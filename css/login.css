@@ -60,8 +60,12 @@ body {
   color: black;
 }
 
+.logoutButton {
+  display: none;
+}
+
 .menu_item:hover {
-  border-bottom: 2px solid pink;
+  border-bottom: 2px solid #48bbed;
 }
 
 .login_box {

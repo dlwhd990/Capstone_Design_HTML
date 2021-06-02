@@ -36,6 +36,9 @@ let canvas_size_button;
 let text_size;
 let text_color;
 let download;
+let sourceList;
+let sourceKeyList;
+let sourceImage;
 
 window.onbeforeunload = function () {
   return "";
@@ -115,6 +118,73 @@ window.onload = () => {
     canvasSizeHeight > 600 ? 600 : canvasSizeHeight
   }px`;
 
+  function setSourceImages(value) {
+    sourceList = value;
+    sourceKeyList = Object.keys(sourceList);
+    const source_box = document.querySelector(".source_image_box");
+    sourceKeyList.map((key) => {
+      const image = document.createElement("img");
+      image.setAttribute("class", "source_image");
+      image.setAttribute("src", `${sourceList[key].uri}`);
+      source_box.appendChild(image);
+    });
+    sourceImage = document.querySelector(".source_image_box");
+    sourceImage.addEventListener("click", (event) => {
+      if (event.target.src) {
+        let imgObj = new Image();
+        imgObj.lockUniScaling = true;
+        imgObj.src = event.target.src;
+        fabric.Image.fromURL(
+          event.target.src,
+          function (imgObj) {
+            imgObj.scale(0.4).set({
+              crossOrigin: "anonymous",
+              angle: 0,
+              padding: 0,
+              cornersize: 10,
+              height: imgObj.height,
+              width: imgObj.width,
+            });
+
+            imgObj.filters[6] = new fabric.Image.filters.Brightness({
+              brightness: 0,
+            });
+            imgObj.filters[7] = new fabric.Image.filters.Contrast({
+              contrast: 0,
+            });
+            imgObj.filters[8] = new fabric.Image.filters.Blur({
+              blur: 0,
+            });
+            imgObj.filters[9] = new fabric.Image.filters.Noise({ noise: 0 });
+            imgObj.filters[10] = new fabric.Image.filters.Pixelate({
+              blocksize: 1,
+            });
+            imgObj.filters[11] = new fabric.Image.filters.Gamma({
+              gamma: [1, 1, 1],
+            });
+            console.log(imgObj);
+            canvas.centerObject(imgObj);
+            canvas.add(imgObj);
+            canvas.renderAll();
+          },
+          { crossOrigin: "anonymous" }
+        );
+      }
+    });
+  }
+
+  function settingSource(callback) {
+    const ref = firebase.database().ref("source");
+    ref.on("value", (item) => {
+      const value = item.val();
+      value && callback(value);
+    });
+
+    return () => ref.off();
+  }
+
+  settingSource(setSourceImages);
+
   imgLoaderBox.addEventListener("click", () => {
     imgLoader.click();
   });
@@ -192,10 +262,6 @@ window.onload = () => {
     canvas.renderAll();
     console.log(targeted);
   };
-
-  putIcon.addEventListener("click", () => {
-    window.alert("기능 추가 예정입니다.");
-  });
 
   discardSelect.addEventListener("click", () => {
     canvas.discardActiveObject();
@@ -391,12 +457,11 @@ window.onload = () => {
 
   //function part
   function saveImage(e) {
-    console.log(this);
     this.href = canvas.toDataURL({
-      format: "png",
+      format: "jpg",
       quality: 1,
     });
-    this.download = "canvas.png";
+    this.download = "Imager.jpg";
   }
 
   function seperateEffect() {

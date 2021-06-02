@@ -18,6 +18,15 @@ a {
   color: white;
 }
 
+ul {
+  list-style: none;
+}
+
+.logoutButton {
+  display: none;
+  cursor: pointer;
+}
+
 input {
   outline: none;
   cursor: pointer;
@@ -248,13 +257,31 @@ input {
   flex-wrap: wrap;
 }
 
-.source_image {
+.source_image_container {
   width: 13%;
   height: 100%;
   background-color: rgb(41, 44, 49);
   color: white;
   border-left: 1px solid black;
   z-index: 1;
+  padding: 0 10px;
+}
+
+.source_image_title {
+  padding: 0 12px;
+  font-size: 1.2rem;
+}
+
+.source_image_box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.source_image {
+  width: 45%;
+  cursor: pointer;
 }
 
 .footer {

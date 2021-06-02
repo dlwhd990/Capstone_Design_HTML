@@ -64,6 +64,10 @@ body {
   border-bottom: 2px solid pink;
 }
 
+.logoutButton {
+  display: none;
+}
+
 .signup_title {
   font-size: 2rem;
   margin: 1rem 0 3rem 0;

@@ -6,11 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Imager</title>
     <link rel="stylesheet" href="css/index.css" />
-    <script src="src/main.js"></script>
-    <script
-      src="https://kit.fontawesome.com/5cb5a09ad0.js"
-      crossorigin="anonymous"
-    ></script>
+
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
       rel="stylesheet"
@@ -25,7 +21,8 @@
       <ul class="menu_list">
         <li class="menu_item"><a href="./editor.html">에디터</a></li>
         <li class="menu_item">도움말</li>
-        <li class="menu_item"><a href="./login.html">로그인</a></li>
+        <li class="menu_item loginButton"><a href="./login.html">로그인</a></li>
+        <li class="menu_item logoutButton">로그아웃</li>
       </ul>
     </header>
     <section class="main_image_box">
@@ -99,5 +96,13 @@
         <span class="data address">주소: 서울시 중구 필동로 1길30</span>
       </div>
     </footer>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
+    <script src="src/loginCheck.js"></script>
+    <script
+      src="https://kit.fontawesome.com/5cb5a09ad0.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

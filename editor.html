@@ -10,11 +10,7 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.3.1/fabric.min.js"
       defer
     ></script>
-    <script src="./src/editor.js"></script>
-    <script
-      src="https://kit.fontawesome.com/5cb5a09ad0.js"
-      crossorigin="anonymous"
-    ></script>
+
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
       rel="stylesheet"
@@ -32,6 +28,12 @@
           <input type="file" accept="file/image*" class="imgLoader" />
         </section>
         <a href="#" class="download">다운로드</a>
+        <ul>
+          <li class="menu_item loginButton">
+            <a href="./login.html">로그인</a>
+          </li>
+          <li class="menu_item logoutButton">로그아웃</li>
+        </ul>
       </div>
     </header>
     <section class="main">
@@ -233,8 +235,10 @@
           </div>
         </section>
       </section>
-      <section class="source_image">
-        <h1>이곳에 소스이미지</h1>
+
+      <section class="source_image_container">
+        <p class="source_image_title">소스이미지</p>
+        <div class="source_image_box"></div>
       </section>
     </section>
     <footer class="footer">
@@ -246,9 +250,23 @@
       <button class="footer_button crop">*자르기</button>
       <button class="footer_button putDraw">*그리기</button>
       <button class="footer_button putText">텍스트</button>
-      <button class="footer_button putIcon">*아이콘추가</button>
       <button class="footer_button discardSelect">선택 해제</button>
       <button class="footer_button removeImage">이미지 제거</button>
     </footer>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-storage.js"></script>
+    <script src="src/loginCheck.js"></script>
+    <script src="src/editor_source.js"></script>
+    <script src="./src/editor.js"></script>
+    <script
+      src="https://kit.fontawesome.com/5cb5a09ad0.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/5cb5a09ad0.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="css/signup.css" />
-    <script src="src/signup.js"></script>
     <script
       src="https://kit.fontawesome.com/5cb5a09ad0.js"
       crossorigin="anonymous"
@@ -25,7 +24,8 @@
       <ul class="menu_list">
         <li class="menu_item"><a href="./editor.html">에디터</a></li>
         <li class="menu_item">도움말</li>
-        <li class="menu_item">로그인</li>
+        <li class="menu_item loginButton"><a href="./login.html">로그인</a></li>
+        <li class="menu_item logoutButton">로그아웃</li>
       </ul>
     </header>
     <section class="signup_box">
@@ -39,5 +39,14 @@
         <p><input type="submit" value="가입하기" class="signup_submit"></p>
       </form>
     </section>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
+    <script src="src/loginCheck.js"></script>
+    <script
+      src="https://kit.fontawesome.com/5cb5a09ad0.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
+
 </html>

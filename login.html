@@ -5,11 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/login.css" />
-    <script src="src/login.js"></script>
-    <script
-      src="https://kit.fontawesome.com/5cb5a09ad0.js"
-      crossorigin="anonymous"
-    ></script>
+    
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
       rel="stylesheet"
@@ -25,18 +21,26 @@
       <ul class="menu_list">
         <li class="menu_item"><a href="./editor.html">에디터</a></li>
         <li class="menu_item">도움말</li>
-        <li class="menu_item">로그인</li>
+        <li class="menu_item loginButton"><a href="./login.html">로그인</a></li>
+        <li class="menu_item logoutButton">로그아웃</li>
       </ul>
     </header>
     <section class="login_box">
-        <h1 class="login_title">로그인</h1>
-      <form method="POST" class="login" action=""><p>
-        <p><b>아이디</b></br><input type="id" class="login_input id" name="userId" placeholder="아이디" /></p>
-        <p><b>비밀번호</b></b></br><input type="password" class="login_input pw" name="userPw" placeholder="비밀번호" /></p>
-        <p><input type="submit" value="로그인" class="login_submit"></p>
-      </form>
+      <h1 class="login_title">로그인</h1>
+      <p><b>아이디</b></br><input type="id" class="login_input id" name="userId" placeholder="아이디" /></p>
+      <p><b>비밀번호</b></b></br><input type="password" class="login_input pw" name="userPw" placeholder="비밀번호" /></p>
+      <button class="login_submit">로그인</button>
       <a href="" class="findIDPW">아이디/비밀번호 찾기</a>
       <a href="./signup.html" class="signup">회원가입</a>
     </section>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
+    <script src="src/login.js"></script>
+    <script src="src/loginCheck.js"></script>
+    <script
+      src="https://kit.fontawesome.com/5cb5a09ad0.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
