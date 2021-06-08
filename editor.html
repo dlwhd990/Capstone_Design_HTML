@@ -10,6 +10,7 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.3.1/fabric.min.js"
       defer
     ></script>
+
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
       rel="stylesheet"
@@ -50,7 +51,12 @@
           <button class="canvas_size_button">입력</button>
         </div>
         <div class="textbox">
-          <h3 class="text_title">텍스트박스</h3>
+          <h3 class="text_title">
+            텍스트박스&nbsp;&nbsp;<button class="left_button putText">
+              추가
+            </button>
+          </h3>
+
           <div class="textbox_values">
             <select name="" id="" class="text_color">
               <option value="black">검은색</option>
@@ -236,22 +242,96 @@
       </section>
 
       <section class="source_image_container">
-        <p class="source_image_title">소스이미지</p>
+        <div class="source_image_title_box">
+          <span class="source_image_title">추천 이미지</span>
+          <button class="source_image_title_button">
+            <i class="fas fa-search"></i
+            ><span class="source_image_title_button_span">이미지 검색</span>
+          </button>
+        </div>
+        <div class="source_image_buttons">
+          <button class="source_image_button icon_button">아이콘</button>
+          <button class="source_image_button background_button">배경</button>
+        </div>
         <div class="source_image_box"></div>
       </section>
     </section>
     <footer class="footer">
-      <button class="footer_button flipY">상하반전</button>
-      <button class="footer_button flipX">좌우반전</button>
-      <button class="footer_button rotate_left">왼쪽 90도</button>
-      <button class="footer_button rotate_right">오른쪽 90도</button>
-      <button class="footer_button rotate_origin">원래대로 회전</button>
-      <button class="footer_button crop">*자르기</button>
-      <button class="footer_button putDraw">*그리기</button>
-      <button class="footer_button putText">텍스트</button>
-      <button class="footer_button discardSelect">선택 해제</button>
-      <button class="footer_button removeImage">이미지 제거</button>
+      <button class="footer_button flipY">
+        상하반전
+        <span class="tooltiptext tooltip-top"
+          >선택한 개체의<br />상하를 반전합니다.</span
+        >
+      </button>
+      <button class="footer_button flipX">
+        좌우반전
+        <span class="tooltiptext tooltip-top"
+          >선택한 개체의<br />좌우를 반전합니다.</span
+        >
+      </button>
+      <button class="footer_button rotate_left">
+        왼쪽 90도
+        <span class="tooltiptext tooltip-top"
+          >선택한 개체를<br />왼쪽으로 90도<br />회전합니다.</span
+        >
+      </button>
+      <button class="footer_button rotate_right">
+        오른쪽 90도
+        <span class="tooltiptext tooltip-top"
+          >선택한 개체를<br />오른쪽으로 90도<br />회전합니다.</span
+        >
+      </button>
+      <button class="footer_button rotate_origin">
+        원래대로 회전
+        <span class="tooltiptext tooltip-top"
+          >선택한 개체의<br />회전을 원래대로<br />되돌립니다.</span
+        >
+      </button>
+      <button class="footer_button crop">
+        *자르기
+        <span class="tooltiptext tooltip-top">(설명)</span>
+      </button>
+      <button class="footer_button putDraw">
+        *그리기
+        <span class="tooltiptext tooltip-top">(설명)</span>
+      </button>
+      <button class="footer_button discardSelect">
+        선택 해제
+        <span class="tooltiptext tooltip-top"
+          >개체의 선택을<br />해제합니다.</span
+        >
+      </button>
+      <button class="footer_button removeImage">
+        이미지 제거
+        <span class="tooltiptext tooltip-top"
+          >선택한 개체를<br />제거합니다.</span
+        >
+      </button>
     </footer>
+    <section class="search_popup">
+      <div class="popup_header">
+        <div class="popup_header_container">
+          <h1 class="popup_header_title">이미지 검색</h1>
+          <div class="popup_header_buttons">
+            <button class="popup_header_icon_button">아이콘</button>
+            <button class="popup_header_bg_button">배경</button>
+          </div>
+        </div>
+        <button class="popup_close"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="popup_tag_container icon_tag">
+        <button class="tag">#감정표현</button>
+        <button class="tag">#동물</button>
+        <button class="tag">#캐릭터</button>
+        <button class="tag">#자연</button>
+      </div>
+      <div class="popup_tag_container bg_tag">
+        <button class="tag">#풍경</button>
+        <button class="tag">#인테리어</button>
+        <button class="tag">#건물</button>
+      </div>
+      <div class="popup_image_container"></div>
+    </section>
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
@@ -259,10 +339,6 @@
     <script src="src/loginCheck.js"></script>
     <script src="src/editor_source.js"></script>
     <script src="./src/editor.js"></script>
-    <script
-      src="https://kit.fontawesome.com/5cb5a09ad0.js"
-      crossorigin="anonymous"
-    ></script>
     <script
       src="https://kit.fontawesome.com/5cb5a09ad0.js"
       crossorigin="anonymous"

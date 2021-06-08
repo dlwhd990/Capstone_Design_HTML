@@ -62,6 +62,10 @@ body {
   border-bottom: 2px solid #48bbed;
 }
 
+.logoutButton {
+  display: none;
+}
+
 .main_image_box {
   height: 68vh;
 }

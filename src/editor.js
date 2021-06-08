@@ -39,6 +39,13 @@ let download;
 let sourceList;
 let sourceKeyList;
 let sourceImage;
+let searchButton;
+let searchPopup;
+let popupClose;
+let popup_icon_button;
+let popup_bg_button;
+let icon_tag;
+let bg_tag;
 
 window.onbeforeunload = function () {
   return "";
@@ -84,6 +91,18 @@ window.onload = () => {
   text_size = document.querySelector(".text_size");
   text_color = document.querySelector(".text_color");
   download = document.querySelector(".download");
+  searchButton = document.querySelector(".source_image_title_button");
+  searchPopup = document.querySelector(".search_popup");
+  popupClose = document.querySelector(".popup_close");
+  popup_icon_button = document.querySelector(".popup_header_icon_button");
+  popup_bg_button = document.querySelector(".popup_header_bg_button");
+  icon_tag = document.querySelector(".icon_tag");
+  bg_tag = document.querySelector(".bg_tag");
+
+  if (fabric.isWebglSupported()) {
+    fabric.textureSize = fabric.maxTextureSize;
+  }
+
   canvas.uniScaleTransform = true;
   let canvasSizeWidth = canvas_section.getBoundingClientRect().width * 0.75;
   let canvasSizeHeight = canvasSizeWidth * 0.6;
@@ -118,10 +137,14 @@ window.onload = () => {
     canvasSizeHeight > 600 ? 600 : canvasSizeHeight
   }px`;
 
-  function setSourceImages(value) {
+  function makeSourceList(value) {
     sourceList = value;
     sourceKeyList = Object.keys(sourceList);
-    const source_box = document.querySelector(".source_image_box");
+  }
+
+  function setSourceImages(value) {
+    makeSourceList(value);
+    const source_box = document.querySelector(".popup_image_container");
     sourceKeyList.map((key) => {
       const image = document.createElement("img");
       image.setAttribute("class", "source_image");
@@ -137,7 +160,7 @@ window.onload = () => {
         fabric.Image.fromURL(
           event.target.src,
           function (imgObj) {
-            imgObj.scale(0.4).set({
+            imgObj.scale(0.1).set({
               crossOrigin: "anonymous",
               angle: 0,
               padding: 0,
@@ -504,4 +527,24 @@ window.onload = () => {
       gamma_blue.value = targeted.filters[11].gamma[2];
     }
   }
+
+  searchButton.addEventListener("click", () => {
+    searchPopup.style.display = "block";
+  });
+  popupClose.addEventListener("click", () => {
+    searchPopup.style.display = "none";
+  });
+
+  popup_icon_button.addEventListener("click", () => {
+    bg_tag.style.display = "none";
+    icon_tag.style.display = "block";
+    popup_icon_button.style.opacity = "1";
+    popup_bg_button.style.opacity = "0.5";
+  });
+  popup_bg_button.addEventListener("click", () => {
+    icon_tag.style.display = "none";
+    bg_tag.style.display = "block";
+    popup_bg_button.style.opacity = "1";
+    popup_icon_button.style.opacity = "0.5";
+  });
 };
