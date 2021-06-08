@@ -46,6 +46,12 @@ let popup_icon_button;
 let popup_bg_button;
 let icon_tag;
 let bg_tag;
+let popup_source_button = true;
+let iconList = [];
+let bgList = [];
+let popupTagContainer;
+let tagClickList = [];
+let bigDataObj;
 
 window.onbeforeunload = function () {
   return "";
@@ -98,6 +104,8 @@ window.onload = () => {
   popup_bg_button = document.querySelector(".popup_header_bg_button");
   icon_tag = document.querySelector(".icon_tag");
   bg_tag = document.querySelector(".bg_tag");
+  popupImageContainer = document.querySelector(".popup_image_container");
+  popupTagContainer = document.querySelector(".icon_tag");
 
   if (fabric.isWebglSupported()) {
     fabric.textureSize = fabric.maxTextureSize;
@@ -137,62 +145,85 @@ window.onload = () => {
     canvasSizeHeight > 600 ? 600 : canvasSizeHeight
   }px`;
 
-  function makeSourceList(value) {
-    sourceList = value;
-    sourceKeyList = Object.keys(sourceList);
+  function setIconAndBg() {
+    sourceKeyList.map(
+      (key) =>
+        sourceList[key].usage === "icon" && iconList.push(sourceList[key])
+    );
+
+    sourceKeyList.map(
+      (key) =>
+        sourceList[key].usage === "background" && bgList.push(sourceList[key])
+    );
+    setSourceImages(iconList);
   }
 
+  function makeSourceList(value, callback) {
+    sourceList = value;
+    sourceKeyList = Object.keys(sourceList);
+    sourceList && sourceKeyList && callback();
+  }
+
+  popupImageContainer.addEventListener("click", (event) => {
+    if (event.target.src) {
+      let dataKey = event.target.dataset.key;
+      bigDataObj[dataKey].count += 1;
+      console.log(dataKey);
+      console.log(bigDataObj);
+      firebase
+        .database()
+        .ref(`bigData/${userAge}/${userGender}/${userPur}`)
+        .set(bigDataObj);
+      let imgObj = new Image();
+      imgObj.lockUniScaling = true;
+      imgObj.src = event.target.src;
+      fabric.Image.fromURL(
+        event.target.src,
+        function (imgObj) {
+          imgObj.scale(0.3).set({
+            crossOrigin: "anonymous",
+            angle: 0,
+            padding: 0,
+            cornersize: 10,
+            height: imgObj.height,
+            width: imgObj.width,
+          });
+
+          imgObj.filters[6] = new fabric.Image.filters.Brightness({
+            brightness: 0,
+          });
+          imgObj.filters[7] = new fabric.Image.filters.Contrast({
+            contrast: 0,
+          });
+          imgObj.filters[8] = new fabric.Image.filters.Blur({
+            blur: 0,
+          });
+          imgObj.filters[9] = new fabric.Image.filters.Noise({ noise: 0 });
+          imgObj.filters[10] = new fabric.Image.filters.Pixelate({
+            blocksize: 1,
+          });
+          imgObj.filters[11] = new fabric.Image.filters.Gamma({
+            gamma: [1, 1, 1],
+          });
+          console.log(imgObj);
+          canvas.centerObject(imgObj);
+          canvas.add(imgObj);
+          canvas.renderAll();
+        },
+        { crossOrigin: "anonymous" }
+      );
+    }
+  });
+
   function setSourceImages(value) {
-    makeSourceList(value);
-    const source_box = document.querySelector(".popup_image_container");
-    sourceKeyList.map((key) => {
+    valueList = value;
+    valueKeyList = Object.keys(valueList);
+    valueKeyList.map((key) => {
       const image = document.createElement("img");
       image.setAttribute("class", "source_image");
-      image.setAttribute("src", `${sourceList[key].uri}`);
-      source_box.appendChild(image);
-    });
-    sourceImage = document.querySelector(".source_image_box");
-    sourceImage.addEventListener("click", (event) => {
-      if (event.target.src) {
-        let imgObj = new Image();
-        imgObj.lockUniScaling = true;
-        imgObj.src = event.target.src;
-        fabric.Image.fromURL(
-          event.target.src,
-          function (imgObj) {
-            imgObj.scale(0.1).set({
-              crossOrigin: "anonymous",
-              angle: 0,
-              padding: 0,
-              cornersize: 10,
-              height: imgObj.height,
-              width: imgObj.width,
-            });
-
-            imgObj.filters[6] = new fabric.Image.filters.Brightness({
-              brightness: 0,
-            });
-            imgObj.filters[7] = new fabric.Image.filters.Contrast({
-              contrast: 0,
-            });
-            imgObj.filters[8] = new fabric.Image.filters.Blur({
-              blur: 0,
-            });
-            imgObj.filters[9] = new fabric.Image.filters.Noise({ noise: 0 });
-            imgObj.filters[10] = new fabric.Image.filters.Pixelate({
-              blocksize: 1,
-            });
-            imgObj.filters[11] = new fabric.Image.filters.Gamma({
-              gamma: [1, 1, 1],
-            });
-            console.log(imgObj);
-            canvas.centerObject(imgObj);
-            canvas.add(imgObj);
-            canvas.renderAll();
-          },
-          { crossOrigin: "anonymous" }
-        );
-      }
+      image.setAttribute("data-key", key);
+      image.setAttribute("src", `${valueList[key].uri}`);
+      popupImageContainer.appendChild(image);
     });
   }
 
@@ -200,13 +231,13 @@ window.onload = () => {
     const ref = firebase.database().ref("source");
     ref.on("value", (item) => {
       const value = item.val();
-      value && callback(value);
+      value && callback(value, setIconAndBg);
     });
 
     return () => ref.off();
   }
 
-  settingSource(setSourceImages);
+  settingSource(makeSourceList);
 
   imgLoaderBox.addEventListener("click", () => {
     imgLoader.click();
@@ -540,11 +571,157 @@ window.onload = () => {
     icon_tag.style.display = "block";
     popup_icon_button.style.opacity = "1";
     popup_bg_button.style.opacity = "0.5";
+    popupImageContainer.innerHTML = "";
+    setSourceImages(iconList);
+    popupTagContainer = document.querySelector(".icon_tag");
+    popupTagContainer.addEventListener("click", (event) => {
+      tagClickList = [];
+      sourceKeyList.map(
+        (key) =>
+          sourceList[key].tag === event.target.innerText.slice(1) &&
+          tagClickList.push(sourceList[key])
+      );
+      popupImageContainer.innerHTML = "";
+      setSourceImages(tagClickList);
+    });
   });
+
   popup_bg_button.addEventListener("click", () => {
     icon_tag.style.display = "none";
     bg_tag.style.display = "block";
     popup_bg_button.style.opacity = "1";
     popup_icon_button.style.opacity = "0.5";
+
+    popupImageContainer.innerHTML = "";
+    setSourceImages(bgList);
+    popupTagContainer = document.querySelector(".bg_tag");
+    popupTagContainer.addEventListener("click", (event) => {
+      tagClickList = [];
+      sourceKeyList.map(
+        (key) =>
+          sourceList[key].tag === event.target.innerText.slice(1) &&
+          tagClickList.push(sourceList[key])
+      );
+      popupImageContainer.innerHTML = "";
+      setSourceImages(tagClickList);
+    });
   });
+
+  popupTagContainer.addEventListener("click", (event) => {
+    tagClickList = [];
+    sourceKeyList.map(
+      (key) =>
+        sourceList[key].tag === event.target.innerText.slice(1) &&
+        tagClickList.push(sourceList[key])
+    );
+    popupImageContainer.innerHTML = "";
+    setSourceImages(tagClickList);
+  });
+  let list = {
+    0: {
+      count: 0,
+    },
+    1: {
+      count: 0,
+    },
+    2: {
+      count: 0,
+    },
+    3: {
+      count: 0,
+    },
+    4: {
+      count: 0,
+    },
+    5: {
+      count: 0,
+    },
+    6: {
+      count: 0,
+    },
+    7: {
+      count: 0,
+    },
+    8: {
+      count: 0,
+    },
+    9: {
+      count: 0,
+    },
+    10: {
+      count: 0,
+    },
+    11: {
+      count: 0,
+    },
+    12: {
+      count: 0,
+    },
+    13: {
+      count: 0,
+    },
+    14: {
+      count: 0,
+    },
+    15: {
+      count: 0,
+    },
+    16: {
+      count: 0,
+    },
+    17: {
+      count: 0,
+    },
+    18: {
+      count: 0,
+    },
+    19: {
+      count: 0,
+    },
+    20: {
+      count: 0,
+    },
+    21: {
+      count: 0,
+    },
+    22: {
+      count: 0,
+    },
+    23: {
+      count: 0,
+    },
+    24: {
+      count: 0,
+    },
+    25: {
+      count: 0,
+    },
+    26: {
+      count: 0,
+    },
+    27: {
+      count: 0,
+    },
+    28: {
+      count: 0,
+    },
+    29: {
+      count: 0,
+    },
+    30: {
+      count: 0,
+    },
+    31: {
+      count: 0,
+    },
+    32: {
+      count: 0,
+    },
+    33: {
+      count: 0,
+    },
+  };
+  function save() {
+    firebase.database().ref("bigData/6570/female/hobby").set(list);
+  }
 };

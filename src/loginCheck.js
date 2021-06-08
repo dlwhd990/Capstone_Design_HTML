@@ -1,4 +1,8 @@
-var firebaseConfig = {
+let userData;
+let userAge;
+let userGender;
+let userPur;
+let firebaseConfig = {
   apiKey: "AIzaSyBV1KyVkhClhmZybbekHGGjdtonJLuk6XU",
   authDomain: "imager-100ac.firebaseapp.com",
   projectId: "imager-100ac",
@@ -14,6 +18,47 @@ firebase.initializeApp(firebaseConfig);
 
 let loginButton = document.querySelector(".loginButton");
 let logoutButton = document.querySelector(".logoutButton");
+let recommandImageContainer = document.querySelector(".source_image_container");
+
+function settingUser(user, callback) {
+  const ref = firebase.database().ref(`userData/${user}`);
+  ref.on("value", (item) => {
+    const value = item.val();
+    value && callback(value);
+  });
+
+  return () => ref.off();
+}
+
+function getBigData(reference, callback) {
+  const ref = firebase.database().ref(`bigData/${reference}`);
+  ref.on("value", (item) => {
+    const value = item.val();
+    value && callback(value);
+  });
+
+  return () => ref.off();
+}
+
+function saveBigData(value) {
+  bigDataObj = value;
+  console.log(bigDataObj);
+}
+
+function distinguishUser(userData) {
+  userAge = userData.age;
+  userGender = userData.gender;
+  userPur = userData.purpose;
+  console.log(userAge, userGender, userPur);
+  getBigData(`${userAge}/${userGender}/${userPur}`, saveBigData);
+}
+
+function updateBigData(image) {}
+
+function getUserData(value) {
+  userData = value;
+  distinguishUser(userData);
+}
 
 function checkUser() {
   firebase.auth().onAuthStateChanged(function (user) {
@@ -22,10 +67,18 @@ function checkUser() {
       console.log(user);
       loginButton.style.display = "none";
       logoutButton.style.display = "block";
+      console.log(user.uid);
+      settingUser(user.uid, getUserData);
     } else {
       console.log("로그인 실패");
       logoutButton.style.display = "none";
       loginButton.style.display = "block";
+      recommandImageContainer.innerHTML = `
+      <div class="source_image_title_box">
+          <span class="source_image_title">추천 이미지</span>
+          <p>로그인 후에 사용가능합니다.</p>
+        </div>
+      `;
     }
   });
 }

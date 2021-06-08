@@ -61,7 +61,7 @@ body {
 }
 
 .menu_item:hover {
-  border-bottom: 2px solid pink;
+  border-bottom: 2px solid #48bbed;
 }
 
 .logoutButton {
@@ -70,12 +70,12 @@ body {
 
 .signup_title {
   font-size: 2rem;
-  margin: 1rem 0 3rem 0;
+  margin: 1rem 0 2rem 0;
 }
 
 .signup_box {
   width: 60%;
-  height: 80vh;
+  height: 700px;
   margin: auto;
   margin-top: 9rem;
   border: 1px solid lightgray;
@@ -96,26 +96,25 @@ body {
   box-shadow: 1px 3px 3px 1px lightgray;
 }
 
-.signup_select_box {
+.select_box {
   display: flex;
   flex-direction: row;
   width: 100%;
-  margin: 0.5rem 0 2rem 0;
 }
 
 .signup_select {
+  flex-basis: 33%;
+}
+
+.select {
   margin-right: 2rem;
-  width: 100%;
+  width: 90%;
   height: 25px;
   font-size: 15px;
   outline: none;
   border: 1px solid rgb(168, 168, 168);
   border-radius: 4px;
   box-shadow: 1px 3px 3px 1px lightgray;
-}
-
-.signup_select_p {
-  flex-basis: 33.3%;
 }
 
 .gender_p {

@@ -31,18 +31,52 @@
     <section class="signup_box">
       <h1 class="signup_title">회원가입</h1>
       <p class="signup_des">Imager의 회원이 되어보세요</p>
-      <form method="POST" class="signup" action=""><p>
-        <p><b>아이디</b></br><input type="id" class="signup_input id" name="userId" placeholder="아이디" /></p>
-        <p><b>비밀번호</b></b></br><input type="password" class="signup_input pw" name="userPw" placeholder="비밀번호" /></p>
-        <p><b>이메일</b></b></br><input type="email" class="signup_input email" name="email" placeholder="이메일" /></p>
-        <p><b>닉네임</b></b></br><input type="text" class="signup_input nickname" name="nickname" placeholder="닉네임" /></p>
-        <p><input type="submit" value="가입하기" class="signup_submit"></p>
-      </form>
+      <p><b>이메일</b></b></br><input type="email" class="signup_input email" name="email" placeholder="이메일" /></p>
+      <p><b>비밀번호</b></b></br><input type="password" class="signup_input pw" name="userPw" placeholder="비밀번호" /></p>
+      <p><b>닉네임</b></b></br><input type="text" class="signup_input nickname" name="nickname" placeholder="닉네임" /></p>
+      <div class="select_box">
+        <p class="signup_select"><b>나이</b></b></br>
+          <select class="age_combobox select age" >
+            <option value="none">선택해주세요</option>
+            <option value="1014">10~14세</option>
+            <option value="1519">15~19세</option>
+            <option value="2024">20~24세</option>
+            <option value="2529">25~29세</option>
+            <option value="3034">30~34세</option>
+            <option value="3539">35~39세</option>
+            <option value="4044">40~44세</option>
+            <option value="4549">45~49세</option>
+            <option value="5054">50~54세</option>
+            <option value="5559">55~59세</option>
+            <option value="6064">60~64세</option>
+            <option value="6570">65~70세</option>
+          </select>
+        </p>
+        <p class="signup_select"><b>성별</b></b></br>
+          <select class="select gender">
+            <option value="none">선택해주세요</option>
+            <option value="male" class="gender_option">남성</option>
+            <option value="female" class="gender_option">여성</option>
+          </select>
+        </p>
+        <p class="signup_select"><b>사용목적</b></b></br>
+          <select class="select purpose">
+            <option value="none">선택해주세요</option>
+            <option value="hobby" class="purpose_option">취미</option>
+            <option value="work" class="purpose_option">업무</option>
+            <option value="sns" class="purpose_option">SNS업로드</option>
+          </select>
+        </p>
+      </div>
+      
+      <p><input type="submit" value="가입하기" class="signup_submit"></p>
     </section>
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-storage.js"></script>
     <script src="src/loginCheck.js"></script>
+    <script src="src/signup.js"></script>
     <script
       src="https://kit.fontawesome.com/5cb5a09ad0.js"
       crossorigin="anonymous"
