@@ -5,6 +5,7 @@ let userPur;
 let bigDataObj;
 let bigDataObjKey;
 let recommandList = [];
+let check = false;
 let recommandImageContainer = document.querySelector(".source_image_container");
 
 let firebaseConfig = {
@@ -45,22 +46,25 @@ function getBigData(reference, callback) {
 }
 
 function saveBigData(value) {
-  bigDataObj = value;
-  bigDataObjKey = Object.keys(bigDataObj);
-  recommandList = [];
-  bigDataObjKey.map((key) =>
-    recommandList.push([bigDataObj[key].count, parseInt(key)])
-  );
-  recommandList.sort(function (a, b) {
-    return b[0] - a[0];
-  });
-  recommandList.map((val) => {
-    const image = document.createElement("img");
-    image.setAttribute("class", "recommand");
-    image.setAttribute("data-key", sourceList[val[1]].id);
-    image.setAttribute("src", `${sourceList[val[1]].uri}`);
-    sourceImageBox.appendChild(image);
-  });
+  if (!check) {
+    check = true;
+    bigDataObj = value;
+    bigDataObjKey = Object.keys(bigDataObj);
+    recommandList = [];
+    bigDataObjKey.map((key) =>
+      recommandList.push([bigDataObj[key].count, parseInt(key)])
+    );
+    recommandList.sort(function (a, b) {
+      return b[0] - a[0];
+    });
+    recommandList.map((val) => {
+      const image = document.createElement("img");
+      image.setAttribute("class", "recommand");
+      image.setAttribute("data-key", sourceList[val[1]].id);
+      image.setAttribute("src", `${sourceList[val[1]].uri}`);
+      sourceImageBox.appendChild(image);
+    });
+  }
 }
 
 function distinguishUser(userData) {

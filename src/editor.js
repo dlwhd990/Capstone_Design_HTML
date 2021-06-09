@@ -10,8 +10,6 @@ let flipX;
 let rotate_left;
 let rotate_right;
 let rotate_origin;
-let crop;
-let putDraw;
 let putText;
 let putIcon;
 let discardSelect;
@@ -74,8 +72,6 @@ window.onload = () => {
   rotate_left = document.querySelector(".rotate_left");
   rotate_right = document.querySelector(".rotate_right");
   rotate_origin = document.querySelector(".rotate_origin");
-  crop = document.querySelector(".crop");
-  putDraw = document.querySelector(".putDraw");
   putText = document.querySelector(".putText");
   putIcon = document.querySelector(".putIcon");
   discardSelect = document.querySelector(".discardSelect");
@@ -164,7 +160,6 @@ window.onload = () => {
       (key) =>
         sourceList[key].usage === "background" && bgList.push(sourceList[key])
     );
-    console.log(iconList, bgList);
     setSourceImages(iconList);
   }
 
@@ -178,13 +173,11 @@ window.onload = () => {
     if (event.target.src) {
       let dataKey = event.target.dataset.key;
       bigDataObj[dataKey].count += 1;
-      console.log(dataKey);
-      console.log(bigDataObj);
+
       firebase
         .database()
         .ref(`bigData/${userAge}/${userGender}/${userPur}`)
         .set(bigDataObj);
-      saveBigData(bigDataObj);
       let imgObj = new Image();
       imgObj.lockUniScaling = true;
       imgObj.src = event.target.src;
@@ -216,7 +209,6 @@ window.onload = () => {
           imgObj.filters[11] = new fabric.Image.filters.Gamma({
             gamma: [1, 1, 1],
           });
-          console.log(imgObj);
           canvas.centerObject(imgObj);
           canvas.add(imgObj);
           canvas.renderAll();
@@ -230,13 +222,10 @@ window.onload = () => {
     if (event.target.src) {
       let dataKey = event.target.dataset.key;
       bigDataObj[dataKey].count += 1;
-      console.log(dataKey);
-      console.log(bigDataObj);
       firebase
         .database()
         .ref(`bigData/${userAge}/${userGender}/${userPur}`)
         .set(bigDataObj);
-      saveBigData(bigDataObj);
       let imgObj = new Image();
       imgObj.lockUniScaling = true;
       imgObj.src = event.target.src;
@@ -268,7 +257,6 @@ window.onload = () => {
           imgObj.filters[11] = new fabric.Image.filters.Gamma({
             gamma: [1, 1, 1],
           });
-          console.log(imgObj);
           canvas.centerObject(imgObj);
           canvas.add(imgObj);
           canvas.renderAll();
@@ -348,14 +336,6 @@ window.onload = () => {
     canvas.renderAll();
   });
 
-  crop.addEventListener("click", () => {
-    window.alert("기능 추가 예정입니다.");
-  });
-
-  putDraw.addEventListener("click", () => {
-    window.alert("기능 추가 예정입니다.");
-  });
-
   putText.addEventListener("click", () => {
     let textbox = new fabric.Textbox("text", {
       left: 50,
@@ -364,7 +344,6 @@ window.onload = () => {
       fontSize: 36,
       fontFamily: "Quicksand",
     });
-    console.log(textbox);
     canvas.add(textbox).setActiveObject(textbox);
   });
 
@@ -378,7 +357,6 @@ window.onload = () => {
     const targeted = canvas.getActiveObject();
     targeted.set("fill", text_color.value);
     canvas.renderAll();
-    console.log(targeted);
   };
 
   discardSelect.addEventListener("click", () => {
@@ -644,7 +622,6 @@ window.onload = () => {
     setSourceImages(iconList);
     popupTagContainer = document.querySelector(".icon_tag");
     popupTagContainer.addEventListener("click", (event) => {
-      console.log(event.target.className);
       if (event.target.className === "tag") {
         tagClickList = [];
         sourceKeyList.map(
