@@ -13,10 +13,14 @@
   </head>
   <body>
     <header class="header">
-      <a href="./index.html" class="logo">
-        <i class="fas fa-magic"></i>
-        <h1 class="logo_text">Imager</h1>
-      </a>
+      <div class="header_top">
+        <a href="./index.html" class="logo">
+          <i class="fas fa-magic"></i>
+          <h1 class="logo_text">Imager</h1>
+        </a>
+        <button class="toggle"><i class="fas fa-bars"></i></button>
+      </div>
+
       <ul class="menu_list">
         <li class="menu_item"><a href="./editor.html">에디터</a></li>
         <li class="menu_item"><a href="./help.html">도움말</a></li>
@@ -46,7 +50,7 @@
       <p class="description">Start designing with stunning images!</p>
       <img src="./images/web_help.png" alt="" class="help_pc_image" /><br />
       <div>
-        <ul class>
+        <ul class="content">
           <li>
             쉽고 편리한 사진 편집 기능을 담았어요! 아마추어에게 추천합니다.
           </li>
@@ -72,7 +76,7 @@
         class="help_mobile_image"
       /><br />
       <div>
-        <ul class>
+        <ul class="content">
           <li>모바일 브라우저에서 즉시 사진을 편집할 수 있습니다.</li>
           <li>설치 또는 다운로드가 불필요합니다.</li>
           <li>빠르게 언제 어디서나 사진을 보정할 수 있습니다.<br /><br /></li>
@@ -95,6 +99,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-storage.js"></script>
     <script src="src/loginCheck.js"></script>
+    <script src="src/help.js"></script>
     <script
       src="https://kit.fontawesome.com/5cb5a09ad0.js"
       crossorigin="anonymous"

@@ -7,6 +7,19 @@ let gender = document.querySelector(".gender");
 let purpose = document.querySelector(".purpose");
 let option;
 let data;
+let toggle = document.querySelector(".toggle");
+let menu = document.querySelector(".menu_list");
+let toggleOn = false;
+
+toggle.addEventListener("click", () => {
+  toggleOn = !toggleOn;
+  console.log(toggleOn);
+  if (toggleOn) {
+    menu.style.display = "block";
+  } else {
+    menu.style.display = "none";
+  }
+});
 
 function errorMessageChange(message) {
   if (message === "The email address is badly formatted.") {
@@ -37,7 +50,8 @@ submitButton.addEventListener("click", () => {
       firebase.database().ref(`userData/${user.uid}`).set(data);
       setTimeout(() => {
         window.alert(`회원가입에 성공했습니다! 아이디: ${email.value}`);
-        window.location.href = "/";
+        window.location.href =
+          "https://dlwhd990.github.io/Capstone_Design_HTML/index.html";
       }, [1000]);
     })
     .catch((error) => {

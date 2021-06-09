@@ -14,14 +14,24 @@
   </head>
   <body>
     <header class="header">
-      <a href="./index.html" class="logo">
-        <i class="fas fa-magic"></i>
-        <h1 class="logo_text">Imager</h1>
-      </a>
+      <div class="header_top">
+        <a href="./index.html" class="logo">
+          <i class="fas fa-magic"></i>
+          <h1 class="logo_text">Imager</h1>
+        </a>
+        <button class="toggle"><i class="fas fa-bars"></i></button>
+      </div>
+
       <ul class="menu_list">
-        <li class="menu_item"><a href="./editor.html">에디터</a></li>
-        <li class="menu_item"><a href="./help.html">도움말</a></li>
-        <li class="menu_item loginButton"><a href="./login.html">로그인</a></li>
+        <li class="menu_item">
+          <a href="./editor.html">에디터</a>
+        </li>
+        <li class="menu_item">
+          <a href="./help.html">도움말</a>
+        </li>
+        <li class="menu_item loginButton">
+          <a href="./login.html">로그인</a>
+        </li>
         <li class="menu_item logoutButton">로그아웃</li>
       </ul>
     </header>
@@ -34,21 +44,21 @@
         <div class="main_item">
           <img src="./images/cut.png" alt="" class="main_item_image" />
           <p class="description">
-            Imager는 기본적인 편집 기능인 자르기,<br />
-            회전, 대칭, 배경제거 기능을 제공합니다.
+            Imager는 기본적인 편집 기능인 자르기, 회전, 대칭, 배경제거 기능을
+            제공합니다.
           </p>
         </div>
         <div class="main_item">
           <img src="./images/time.png" alt="" class="main_item_image" />
           <p class="description">
-            Imager는 쉬운 사용으로 당신의 시간을 <br />절약해줍니다.
+            Imager는 쉬운 사용으로 당신의 시간을 절약해줍니다.
           </p>
         </div>
         <div class="main_item">
           <img src="./images/color.png" alt="" class="main_item_image" />
           <p class="description">
-            Imager는 기본적인 편집 기능 뿐만 아니라<br />
-            이미지의 색상이나 톤을 보정하는 기능까지 <br />제공됩니다.
+            Imager는 기본적인 편집 기능 뿐만 아니라 이미지의 색상이나 톤을
+            보정하는 기능까지 제공됩니다.
           </p>
         </div>
       </section>
@@ -71,7 +81,7 @@
             </p>
           </div>
         </div>
-        <div class="login_item">
+        <div class="login_item last">
           <i class="fas fa-chart-pie"></i>
           <div class="login_item_text_data">
             <h2 class="login_item_title">
@@ -100,6 +110,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
     <script src="src/loginCheck.js"></script>
+    <script src="src/main.js"></script>
     <script
       src="https://kit.fontawesome.com/5cb5a09ad0.js"
       crossorigin="anonymous"

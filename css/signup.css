@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+ul {
+  padding: 1rem 0;
+}
+
 body {
   margin: 0;
   font-family: "Noto Sans KR", sans-serif;
@@ -143,4 +147,119 @@ body {
   font-size: 20px;
   font-weight: bolder;
   box-shadow: 1px 3px 3px 1px lightgray;
+}
+
+.toggle {
+  display: none;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  font-size: 1.5rem;
+  position: fixed;
+  top: 1.4rem;
+  right: 1.5rem;
+}
+
+@media screen and (max-width: 780px) {
+  .header {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+  .logo i {
+    font-size: 1.4rem;
+    height: 100%;
+    margin-top: 0.3rem;
+  }
+
+  .logo_text {
+    margin-left: 0.3rem;
+    font-size: 1.6rem;
+  }
+
+  .toggle {
+    display: block;
+  }
+
+  .menu_list {
+    display: none;
+    height: auto;
+  }
+
+  .signup_title {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .signup_box {
+    width: 90%;
+    height: auto;
+    margin: auto;
+    margin-top: 7rem;
+    border: 1px solid lightgray;
+    border-radius: 1rem;
+    box-shadow: 1px 3px 3px 1px lightgray;
+    padding: 1rem;
+  }
+
+  .signup_input {
+    width: 100%;
+    height: 30px;
+    margin: 0.2rem 0;
+    outline: none;
+    font-size: 18px;
+    padding: 0.3rem;
+    border: 1px solid rgb(168, 168, 168);
+    border-radius: 4px;
+    box-shadow: 1px 3px 3px 1px lightgray;
+  }
+
+  .select_box {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .signup_select {
+    flex-basis: 33%;
+  }
+
+  .select {
+    margin-right: 2rem;
+    width: 90%;
+    height: 25px;
+    font-size: 15px;
+    outline: none;
+    border: 1px solid rgb(168, 168, 168);
+    border-radius: 4px;
+    box-shadow: 1px 3px 3px 1px lightgray;
+  }
+
+  .gender_p {
+    padding-right: 2rem;
+  }
+
+  .age_p {
+    padding: 0 2rem;
+  }
+
+  .purpose_p {
+    padding-left: 2rem;
+  }
+
+  .signup_submit {
+    margin-top: 0;
+    width: 100%;
+    height: 40px;
+    font-size: 1rem;
+    outline: none;
+    cursor: pointer;
+    border: none;
+    background-color: #48bbed;
+    color: white;
+    border-radius: 4px;
+    font-size: 20px;
+    font-weight: bolder;
+    box-shadow: 1px 3px 3px 1px lightgray;
+  }
 }

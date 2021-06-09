@@ -7,6 +7,10 @@ a {
   color: black;
 }
 
+ul {
+  padding: 1rem 0;
+}
+
 body {
   margin: 0;
   font-family: "Noto Sans KR", sans-serif;
@@ -116,15 +120,6 @@ body {
   height: 220px;
 }
 
-.description {
-  margin: 2rem 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid lightgray;
-  font-size: 1.3rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
 .go_editor {
   border: 2px solid #48bbed;
   margin-bottom: 10rem;
@@ -215,4 +210,177 @@ body {
 
 .data {
   padding: 0 0.5rem;
+}
+
+.toggle {
+  display: none;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  font-size: 1.5rem;
+  position: fixed;
+  top: 1.4rem;
+  right: 1.5rem;
+}
+
+@media screen and (max-width: 780px) {
+  .header {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+  .logo i {
+    font-size: 1.4rem;
+    height: 100%;
+    margin-top: 0.3rem;
+  }
+
+  .logo_text {
+    margin-left: 0.3rem;
+    font-size: 1.6rem;
+  }
+
+  .toggle {
+    display: block;
+  }
+  .menu_list {
+    display: none;
+    height: auto;
+    padding: 1rem;
+  }
+  .main_image_box {
+    display: none;
+  }
+  .main_image {
+    display: none;
+  }
+
+  .main {
+    padding: 0 2rem;
+  }
+
+  .main_title {
+    font-size: 1.6rem;
+    margin-top: 6rem;
+    margin-bottom: 0;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid lightgray;
+  }
+
+  .help_pc_image {
+    width: 80%;
+  }
+
+  .description {
+    margin: 0;
+    padding: 2rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    white-space: normal;
+  }
+
+  .main_items {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 4rem;
+    margin: 0;
+  }
+
+  .main_item {
+    width: 100%;
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+
+  .main_item_image {
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .go_editor {
+    margin-top: 0;
+    margin-bottom: 2rem;
+    padding: 1rem 1.5rem;
+    font-size: 1.2rem;
+  }
+
+  .login {
+    margin-bottom: 3rem;
+  }
+
+  .login_title {
+    font-size: 1.8rem;
+  }
+
+  .login_item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .login_item_title {
+    font-size: 1.2rem;
+    margin-top: 2rem;
+  }
+
+  .login_item_description {
+    font-size: 1rem;
+  }
+
+  .login_item_text_data {
+    width: 80%;
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .login_item i {
+    font-size: 8rem;
+    color: #48bbed;
+  }
+
+  .last {
+    margin-bottom: 0;
+  }
+
+  .go_login {
+    border: 2px solid #48bbed;
+    padding: 1rem 2.5rem;
+    margin-top: 1rem;
+    border-radius: 1rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    transition: all 300ms ease-in-out;
+    cursor: pointer;
+  }
+
+  .footer {
+    width: 100%;
+    height: auto;
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 1rem;
+  }
+
+  .copyright {
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+  }
+
+  .footer_datas {
+    text-align: center;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .data {
+    padding: 0.2rem;
+  }
 }
