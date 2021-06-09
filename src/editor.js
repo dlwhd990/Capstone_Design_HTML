@@ -281,6 +281,7 @@ window.onload = () => {
   function setSourceImages(value) {
     valueList = value;
     valueKeyList = Object.keys(valueList);
+    popupImageContainer.innerHTML = "";
     valueKeyList.map((key) => {
       const image = document.createElement("img");
       image.setAttribute("class", "source_image");
