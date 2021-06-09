@@ -563,3 +563,7 @@ button:hover:after {
 .recommand_help_content_box {
   padding: 0 1rem;
 }
+
+.recommand_help_content {
+  font-size: 1.2rem;
+}
