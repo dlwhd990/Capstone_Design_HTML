@@ -3,7 +3,6 @@ let id, pw;
 function Ready() {
   id = document.querySelector(".id").value;
   pw = document.querySelector(".pw").value;
-  console.log(id, pw);
 }
 
 function errorIdentifier(message) {
@@ -37,7 +36,6 @@ document.querySelector(".login_submit").onclick = function () {
     });
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-      console.log(user);
       window.history.back();
     }
   });
@@ -45,7 +43,6 @@ document.querySelector(".login_submit").onclick = function () {
 
 window.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
-    console.log(e.key);
     Ready();
     firebase
       .auth()
@@ -56,7 +53,6 @@ window.addEventListener("keypress", (e) => {
       });
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        console.log(user);
         window.history.back();
       }
     });

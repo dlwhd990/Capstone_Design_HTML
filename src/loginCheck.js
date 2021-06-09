@@ -2,6 +2,11 @@ let userData;
 let userAge;
 let userGender;
 let userPur;
+let bigDataObj;
+let bigDataObjKey;
+let recommandList = [];
+let recommandImageContainer = document.querySelector(".source_image_container");
+
 let firebaseConfig = {
   apiKey: "AIzaSyBV1KyVkhClhmZybbekHGGjdtonJLuk6XU",
   authDomain: "imager-100ac.firebaseapp.com",
@@ -18,7 +23,6 @@ firebase.initializeApp(firebaseConfig);
 
 let loginButton = document.querySelector(".loginButton");
 let logoutButton = document.querySelector(".logoutButton");
-let recommandImageContainer = document.querySelector(".source_image_container");
 
 function settingUser(user, callback) {
   const ref = firebase.database().ref(`userData/${user}`);
@@ -42,18 +46,29 @@ function getBigData(reference, callback) {
 
 function saveBigData(value) {
   bigDataObj = value;
-  console.log(bigDataObj);
+  bigDataObjKey = Object.keys(bigDataObj);
+  recommandList = [];
+  bigDataObjKey.map((key) =>
+    recommandList.push([bigDataObj[key].count, parseInt(key)])
+  );
+  recommandList.sort(function (a, b) {
+    return b[0] - a[0];
+  });
+  recommandList.map((val) => {
+    const image = document.createElement("img");
+    image.setAttribute("class", "recommand");
+    image.setAttribute("data-key", sourceList[val[1]].id);
+    image.setAttribute("src", `${sourceList[val[1]].uri}`);
+    sourceImageBox.appendChild(image);
+  });
 }
 
 function distinguishUser(userData) {
   userAge = userData.age;
   userGender = userData.gender;
   userPur = userData.purpose;
-  console.log(userAge, userGender, userPur);
   getBigData(`${userAge}/${userGender}/${userPur}`, saveBigData);
 }
-
-function updateBigData(image) {}
 
 function getUserData(value) {
   userData = value;
@@ -64,10 +79,8 @@ function checkUser() {
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       console.log("로그인 성공");
-      console.log(user);
       loginButton.style.display = "none";
       logoutButton.style.display = "block";
-      console.log(user.uid);
       settingUser(user.uid, getUserData);
     } else {
       console.log("로그인 실패");
@@ -75,7 +88,12 @@ function checkUser() {
       loginButton.style.display = "block";
       recommandImageContainer.innerHTML = `
       <div class="source_image_title_box">
-          <span class="source_image_title">추천 이미지</span>
+          <span class="source_image_title">이미지 추천</span>
+          <p>로그인 후에 사용가능합니다.</p>
+        </div>
+      `;
+      popupImageContainer.innerHTML = `
+      <div class="source_image_title_box">
           <p>로그인 후에 사용가능합니다.</p>
         </div>
       `;

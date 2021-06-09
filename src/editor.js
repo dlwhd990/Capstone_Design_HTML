@@ -39,6 +39,7 @@ let download;
 let sourceList;
 let sourceKeyList;
 let sourceImage;
+let sourceImageBox;
 let searchButton;
 let searchPopup;
 let popupClose;
@@ -51,7 +52,9 @@ let iconList = [];
 let bgList = [];
 let popupTagContainer;
 let tagClickList = [];
-let bigDataObj;
+let recommandHelpPopup;
+let recommandHelpPopupClose;
+let showRecommandHelp;
 
 window.onbeforeunload = function () {
   return "";
@@ -106,6 +109,12 @@ window.onload = () => {
   bg_tag = document.querySelector(".bg_tag");
   popupImageContainer = document.querySelector(".popup_image_container");
   popupTagContainer = document.querySelector(".icon_tag");
+  sourceImageBox = document.querySelector(".source_image_box");
+  recommandHelpPopup = document.querySelector(".recommand_help_popup");
+  recommandHelpPopupClose = document.querySelector(
+    ".recommand_help_popup_close"
+  );
+  showRecommandHelp = document.querySelector(".recommand_help");
 
   if (fabric.isWebglSupported()) {
     fabric.textureSize = fabric.maxTextureSize;
@@ -155,6 +164,7 @@ window.onload = () => {
       (key) =>
         sourceList[key].usage === "background" && bgList.push(sourceList[key])
     );
+    console.log(iconList, bgList);
     setSourceImages(iconList);
   }
 
@@ -174,6 +184,59 @@ window.onload = () => {
         .database()
         .ref(`bigData/${userAge}/${userGender}/${userPur}`)
         .set(bigDataObj);
+      saveBigData(bigDataObj);
+      let imgObj = new Image();
+      imgObj.lockUniScaling = true;
+      imgObj.src = event.target.src;
+      fabric.Image.fromURL(
+        event.target.src,
+        function (imgObj) {
+          imgObj.scale(0.3).set({
+            crossOrigin: "anonymous",
+            angle: 0,
+            padding: 0,
+            cornersize: 10,
+            height: imgObj.height,
+            width: imgObj.width,
+          });
+
+          imgObj.filters[6] = new fabric.Image.filters.Brightness({
+            brightness: 0,
+          });
+          imgObj.filters[7] = new fabric.Image.filters.Contrast({
+            contrast: 0,
+          });
+          imgObj.filters[8] = new fabric.Image.filters.Blur({
+            blur: 0,
+          });
+          imgObj.filters[9] = new fabric.Image.filters.Noise({ noise: 0 });
+          imgObj.filters[10] = new fabric.Image.filters.Pixelate({
+            blocksize: 1,
+          });
+          imgObj.filters[11] = new fabric.Image.filters.Gamma({
+            gamma: [1, 1, 1],
+          });
+          console.log(imgObj);
+          canvas.centerObject(imgObj);
+          canvas.add(imgObj);
+          canvas.renderAll();
+        },
+        { crossOrigin: "anonymous" }
+      );
+    }
+  });
+
+  sourceImageBox.addEventListener("click", (event) => {
+    if (event.target.src) {
+      let dataKey = event.target.dataset.key;
+      bigDataObj[dataKey].count += 1;
+      console.log(dataKey);
+      console.log(bigDataObj);
+      firebase
+        .database()
+        .ref(`bigData/${userAge}/${userGender}/${userPur}`)
+        .set(bigDataObj);
+      saveBigData(bigDataObj);
       let imgObj = new Image();
       imgObj.lockUniScaling = true;
       imgObj.src = event.target.src;
@@ -221,7 +284,7 @@ window.onload = () => {
     valueKeyList.map((key) => {
       const image = document.createElement("img");
       image.setAttribute("class", "source_image");
-      image.setAttribute("data-key", key);
+      image.setAttribute("data-key", `${valueList[key].id}`);
       image.setAttribute("src", `${valueList[key].uri}`);
       popupImageContainer.appendChild(image);
     });
@@ -565,24 +628,32 @@ window.onload = () => {
   popupClose.addEventListener("click", () => {
     searchPopup.style.display = "none";
   });
+  showRecommandHelp.addEventListener("click", () => {
+    recommandHelpPopup.style.display = "block";
+  });
+  recommandHelpPopupClose.addEventListener("click", () => {
+    recommandHelpPopup.style.display = "none";
+  });
 
   popup_icon_button.addEventListener("click", () => {
     bg_tag.style.display = "none";
     icon_tag.style.display = "block";
     popup_icon_button.style.opacity = "1";
     popup_bg_button.style.opacity = "0.5";
-    popupImageContainer.innerHTML = "";
     setSourceImages(iconList);
     popupTagContainer = document.querySelector(".icon_tag");
     popupTagContainer.addEventListener("click", (event) => {
-      tagClickList = [];
-      sourceKeyList.map(
-        (key) =>
-          sourceList[key].tag === event.target.innerText.slice(1) &&
-          tagClickList.push(sourceList[key])
-      );
-      popupImageContainer.innerHTML = "";
-      setSourceImages(tagClickList);
+      console.log(event.target.className);
+      if (event.target.className === "tag") {
+        tagClickList = [];
+        sourceKeyList.map(
+          (key) =>
+            sourceList[key].tag === event.target.innerText.slice(1) &&
+            tagClickList.push(sourceList[key])
+        );
+        popupImageContainer.innerHTML = "";
+        setSourceImages(tagClickList);
+      }
     });
   });
 
@@ -592,10 +663,24 @@ window.onload = () => {
     popup_bg_button.style.opacity = "1";
     popup_icon_button.style.opacity = "0.5";
 
-    popupImageContainer.innerHTML = "";
     setSourceImages(bgList);
     popupTagContainer = document.querySelector(".bg_tag");
     popupTagContainer.addEventListener("click", (event) => {
+      if (event.target.className === "tag") {
+        tagClickList = [];
+        sourceKeyList.map(
+          (key) =>
+            sourceList[key].tag === event.target.innerText.slice(1) &&
+            tagClickList.push(sourceList[key])
+        );
+        popupImageContainer.innerHTML = "";
+        setSourceImages(tagClickList);
+      }
+    });
+  });
+
+  popupTagContainer.addEventListener("click", (event) => {
+    if (event.target.className === "tag") {
       tagClickList = [];
       sourceKeyList.map(
         (key) =>
@@ -604,18 +689,7 @@ window.onload = () => {
       );
       popupImageContainer.innerHTML = "";
       setSourceImages(tagClickList);
-    });
-  });
-
-  popupTagContainer.addEventListener("click", (event) => {
-    tagClickList = [];
-    sourceKeyList.map(
-      (key) =>
-        sourceList[key].tag === event.target.innerText.slice(1) &&
-        tagClickList.push(sourceList[key])
-    );
-    popupImageContainer.innerHTML = "";
-    setSourceImages(tagClickList);
+    }
   });
   let list = {
     0: {

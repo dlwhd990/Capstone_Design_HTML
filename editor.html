@@ -28,7 +28,8 @@
           <input type="file" accept="file/image*" class="imgLoader" />
         </section>
         <a href="#" class="download">다운로드</a>
-        <ul>
+        <ul class="menu_item_container">
+          <li class="menu_item recommand_help">이미지 추천이란?</li>
           <li class="menu_item loginButton">
             <a href="./login.html">로그인</a>
           </li>
@@ -243,15 +244,11 @@
 
       <section class="source_image_container">
         <div class="source_image_title_box">
-          <span class="source_image_title">추천 이미지</span>
+          <span class="source_image_title">이미지 추천</span>
           <button class="source_image_title_button">
             <i class="fas fa-search"></i
             ><span class="source_image_title_button_span">이미지 검색</span>
           </button>
-        </div>
-        <div class="source_image_buttons">
-          <button class="source_image_button icon_button">아이콘</button>
-          <button class="source_image_button background_button">배경</button>
         </div>
         <div class="source_image_box"></div>
       </section>
@@ -331,6 +328,22 @@
         <button class="tag">#건물</button>
       </div>
       <div class="popup_image_container"></div>
+    </section>
+    <section class="recommand_help_popup">
+      <div class="recommand_help_header">
+        <h1 class="recommand_help_popup_title">이미지 추천이란?</h1>
+        <button class="recommand_help_popup_close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="recommand_help_content_box">
+        <p class="recommand_help_content">
+          Imager의 이미지 추천 기능은 회원님의 나이대, 성별, 가입 용도를
+          활용하여 같은 유형의 사용자가 많이 사용한 순서대로 이미지들을
+          추천해드리는 기능입니다.
+        </p>
+      </div>
     </section>
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-auth.js"></script>
