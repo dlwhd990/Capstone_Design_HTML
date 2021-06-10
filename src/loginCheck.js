@@ -6,7 +6,7 @@ let bigDataObj;
 let bigDataObjKey;
 let recommandList = [];
 let check = false;
-let recommandImageContainer = document.querySelector(".source_image_container");
+let sourceHeader = document.querySelector(".source_header");
 
 let firebaseConfig = {
   apiKey: "AIzaSyBV1KyVkhClhmZybbekHGGjdtonJLuk6XU",
@@ -90,17 +90,43 @@ function checkUser() {
       console.log("로그인 실패");
       logoutButton.style.display = "none";
       loginButton.style.display = "block";
-      recommandImageContainer.innerHTML = `
-      <div class="source_image_title_box">
-          <span class="source_image_title">이미지 추천</span>
-          <p>로그인 후에 사용가능합니다.</p>
+      if (sourceHeader) {
+        sourceHeader.innerHTML = `
+        <div class="source_image_title_box">
+        <p class="source_header_title">소스이미지</p>
+            <p>로그인 후에 사용가능합니다.</p>
+          </div>
+        `;
+        sourceHeaderTitle = document.querySelector(".source_header_title");
+        sourceHeaderTitle.style.textAlign = "center";
+        sourceHeaderTitle.style.margin = "";
+      }
+      if (recommandImageContainer) {
+        recommandImageContainer.innerHTML = `
+        <div class="source_image_title_box">
+            <span class="source_image_title">이미지 추천</span>
+            <p>로그인 후에 사용가능합니다.</p>
+          </div>
+        `;
+      }
+
+      if (searchPopup) {
+        searchPopup.innerHTML = `
+        <div class="source_image_title_box">
+          <div class="popup_header">
+            <div class="popup_header_container">
+              <h1 class="popup_header_title">이미지 검색</h1>
+            </div>
+            <button class="popup_close"><i class="fas fa-times"></i></button>
+          </div>
+          <p>로그인 후에 사용 가능합니다.</p>
         </div>
-      `;
-      popupImageContainer.innerHTML = `
-      <div class="source_image_title_box">
-          <p>로그인 후에 사용가능합니다.</p>
-        </div>
-      `;
+        `;
+        popupClose = document.querySelector(".popup_close");
+        popupClose.addEventListener("click", () => {
+          searchPopup.style.display = "none";
+        });
+      }
     }
   });
 }

@@ -1,3 +1,7 @@
+let goEdit = document.querySelector(".go_edit");
+if (window.innerWidth <= 780) {
+  goEdit.href = "./editor_mobile.html";
+}
 let email = document.querySelector(".email");
 let pw = document.querySelector(".pw");
 let nickname = document.querySelector(".nickname");

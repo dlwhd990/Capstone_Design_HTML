@@ -1,5 +1,6 @@
 let canvas;
 let canvasBox;
+let cancon;
 let canvasItem;
 let upper_canvas;
 let lower_canvas;
@@ -41,11 +42,10 @@ let sourceImageBox;
 let searchButton;
 let searchPopup;
 let popupClose;
-let popup_icon_button;
-let popup_bg_button;
+let icon_button;
+let bg_button;
 let icon_tag;
 let bg_tag;
-let popup_source_button = true;
 let iconList = [];
 let bgList = [];
 let popupTagContainer;
@@ -53,7 +53,25 @@ let tagClickList = [];
 let recommandHelpPopup;
 let recommandHelpPopupClose;
 let showRecommandHelp;
-let recommandImageContainer;
+let toggle = document.querySelector(".toggle");
+let menu = document.querySelector(".header_buttons");
+let toggleOn = false;
+let sourceContainer;
+let popupImageContainer;
+
+function checkToggle() {
+  if (toggleOn) {
+    menu.style.display = "block";
+  } else {
+    menu.style.display = "none";
+  }
+}
+
+toggle.addEventListener("click", () => {
+  toggleOn = !toggleOn;
+  console.log(toggleOn);
+  checkToggle();
+});
 
 window.onbeforeunload = function () {
   return "";
@@ -65,6 +83,7 @@ window.onload = () => {
   upper_canvas = document.querySelector(".upper-canvas");
   lower_canvas = document.querySelector(".lower-canvas");
   canvasBox = document.querySelector(".canvas_box");
+  cancon = document.querySelector(".canvas-container");
   canvasItem = document.querySelector(".canvas");
   imgLoaderBox = document.querySelector(".imgLoaderBox");
   imgLoader = document.querySelector(".imgLoader");
@@ -100,57 +119,41 @@ window.onload = () => {
   searchButton = document.querySelector(".source_image_title_button");
   searchPopup = document.querySelector(".search_popup");
   popupClose = document.querySelector(".popup_close");
-  popup_icon_button = document.querySelector(".popup_header_icon_button");
-  popup_bg_button = document.querySelector(".popup_header_bg_button");
+  icon_button = document.querySelector(".icon_button");
+  bg_button = document.querySelector(".bg_button");
   icon_tag = document.querySelector(".icon_tag");
   bg_tag = document.querySelector(".bg_tag");
-  popupImageContainer = document.querySelector(".popup_image_container");
-  popupTagContainer = document.querySelector(".icon_tag");
+  tagContainer = document.querySelector(".icon_tag");
   sourceImageBox = document.querySelector(".source_image_box");
-  recommandImageContainer = document.querySelector(".source_image_container");
   recommandHelpPopup = document.querySelector(".recommand_help_popup");
   recommandHelpPopupClose = document.querySelector(
     ".recommand_help_popup_close"
   );
   showRecommandHelp = document.querySelector(".recommand_help");
+  sourceContainer = document.querySelector(".source_container");
 
   if (fabric.isWebglSupported()) {
     fabric.textureSize = fabric.maxTextureSize;
   }
 
   canvas.uniScaleTransform = true;
-  let canvasSizeWidth = canvas_section.getBoundingClientRect().width * 0.75;
-  let canvasSizeHeight = canvasSizeWidth * 0.6;
-  upper_canvas.style.width = `${
-    canvasSizeWidth > 1000 ? 1000 : canvasSizeWidth
-  }px`;
-  upper_canvas.style.height = `${
-    canvasSizeHeight > 600 ? 600 : canvasSizeHeight
-  }px`;
-  upper_canvas.style.marginTop = `${
-    (600 - (canvasSizeHeight > 600 ? 600 : canvasSizeHeight)) / 2
-  }px`;
-  lower_canvas.style.width = `${
-    canvasSizeWidth > 1000 ? 1000 : canvasSizeWidth
-  }px`;
-  lower_canvas.style.height = `${
-    canvasSizeHeight > 600 ? 600 : canvasSizeHeight
-  }px`;
-  lower_canvas.style.marginTop = `${
-    (600 - (canvasSizeHeight > 600 ? 600 : canvasSizeHeight)) / 2
-  }px`;
-  canvasBox.style.width = `${
-    canvasSizeWidth > 1000 ? 1000 : canvasSizeWidth
-  }px`;
-  canvasBox.style.height = `${
-    canvasSizeHeight > 600 ? 600 : canvasSizeHeight
-  }px`;
-  canvasItem.style.width = `${
-    canvasSizeWidth > 1000 ? 1000 : canvasSizeWidth
-  }px`;
-  canvasItem.style.height = `${
-    canvasSizeHeight > 600 ? 600 : canvasSizeHeight
-  }px`;
+  let canvasSizeWidth = window.innerWidth;
+  let canvasSizeHeight = canvas_section.getBoundingClientRect().height * 0.99;
+
+  upper_canvas.style.width = `${canvasSizeWidth}px`;
+  upper_canvas.style.height = `${canvasSizeHeight}px`;
+
+  lower_canvas.style.width = `${canvasSizeWidth}px`;
+  lower_canvas.style.height = `${canvasSizeHeight}px`;
+
+  canvasBox.style.width = `${canvasSizeWidth}px`;
+  canvasBox.style.height = `${canvasSizeHeight}px`;
+
+  canvasItem.style.width = `${canvasSizeWidth}px`;
+  canvasItem.style.height = `${canvasSizeHeight}px`;
+
+  cancon.style.width = `${canvasSizeWidth}px`;
+  cancon.style.height = `${canvasSizeHeight}px`;
 
   function setIconAndBg() {
     sourceKeyList.map(
@@ -171,113 +174,16 @@ window.onload = () => {
     sourceList && sourceKeyList && callback();
   }
 
-  popupImageContainer.addEventListener("click", (event) => {
-    if (event.target.src) {
-      let dataKey = event.target.dataset.key;
-      bigDataObj[dataKey].count += 1;
-
-      firebase
-        .database()
-        .ref(`bigData/${userAge}/${userGender}/${userPur}`)
-        .set(bigDataObj);
-      let imgObj = new Image();
-      imgObj.lockUniScaling = true;
-      imgObj.src = event.target.src;
-      fabric.Image.fromURL(
-        event.target.src,
-        function (imgObj) {
-          imgObj.scale(0.3).set({
-            crossOrigin: "anonymous",
-            angle: 0,
-            padding: 0,
-            cornersize: 10,
-            height: imgObj.height,
-            width: imgObj.width,
-          });
-
-          imgObj.filters[6] = new fabric.Image.filters.Brightness({
-            brightness: 0,
-          });
-          imgObj.filters[7] = new fabric.Image.filters.Contrast({
-            contrast: 0,
-          });
-          imgObj.filters[8] = new fabric.Image.filters.Blur({
-            blur: 0,
-          });
-          imgObj.filters[9] = new fabric.Image.filters.Noise({ noise: 0 });
-          imgObj.filters[10] = new fabric.Image.filters.Pixelate({
-            blocksize: 1,
-          });
-          imgObj.filters[11] = new fabric.Image.filters.Gamma({
-            gamma: [1, 1, 1],
-          });
-          canvas.centerObject(imgObj);
-          canvas.add(imgObj);
-          canvas.renderAll();
-        },
-        { crossOrigin: "anonymous" }
-      );
-    }
-  });
-
-  sourceImageBox.addEventListener("click", (event) => {
-    if (event.target.src) {
-      let dataKey = event.target.dataset.key;
-      bigDataObj[dataKey].count += 1;
-      firebase
-        .database()
-        .ref(`bigData/${userAge}/${userGender}/${userPur}`)
-        .set(bigDataObj);
-      let imgObj = new Image();
-      imgObj.lockUniScaling = true;
-      imgObj.src = event.target.src;
-      fabric.Image.fromURL(
-        event.target.src,
-        function (imgObj) {
-          imgObj.scale(0.3).set({
-            crossOrigin: "anonymous",
-            angle: 0,
-            padding: 0,
-            cornersize: 10,
-            height: imgObj.height,
-            width: imgObj.width,
-          });
-
-          imgObj.filters[6] = new fabric.Image.filters.Brightness({
-            brightness: 0,
-          });
-          imgObj.filters[7] = new fabric.Image.filters.Contrast({
-            contrast: 0,
-          });
-          imgObj.filters[8] = new fabric.Image.filters.Blur({
-            blur: 0,
-          });
-          imgObj.filters[9] = new fabric.Image.filters.Noise({ noise: 0 });
-          imgObj.filters[10] = new fabric.Image.filters.Pixelate({
-            blocksize: 1,
-          });
-          imgObj.filters[11] = new fabric.Image.filters.Gamma({
-            gamma: [1, 1, 1],
-          });
-          canvas.centerObject(imgObj);
-          canvas.add(imgObj);
-          canvas.renderAll();
-        },
-        { crossOrigin: "anonymous" }
-      );
-    }
-  });
-
   function setSourceImages(value) {
     valueList = value;
     valueKeyList = Object.keys(valueList);
-    popupImageContainer.innerHTML = "";
+    sourceContainer.innerHTML = "";
     valueKeyList.map((key) => {
       const image = document.createElement("img");
       image.setAttribute("class", "source_image");
       image.setAttribute("data-key", `${valueList[key].id}`);
       image.setAttribute("src", `${valueList[key].uri}`);
-      popupImageContainer.appendChild(image);
+      sourceContainer.appendChild(image);
     });
   }
 
@@ -292,6 +198,105 @@ window.onload = () => {
   }
 
   settingSource(makeSourceList);
+
+  sourceContainer.addEventListener("click", (event) => {
+    console.log(event.target.src);
+    if (event.target.src) {
+      let imgObj = new Image();
+      imgObj.lockUniScaling = true;
+      imgObj.src = event.target.src;
+      fabric.Image.fromURL(
+        event.target.src,
+        function (imgObj) {
+          imgObj.scale(0.3).set({
+            crossOrigin: "anonymous",
+            angle: 0,
+            padding: 0,
+            cornersize: 10,
+            height: imgObj.height,
+            width: imgObj.width,
+          });
+
+          imgObj.filters[6] = new fabric.Image.filters.Brightness({
+            brightness: 0,
+          });
+          imgObj.filters[7] = new fabric.Image.filters.Contrast({
+            contrast: 0,
+          });
+          imgObj.filters[8] = new fabric.Image.filters.Blur({
+            blur: 0,
+          });
+          imgObj.filters[9] = new fabric.Image.filters.Noise({ noise: 0 });
+          imgObj.filters[10] = new fabric.Image.filters.Pixelate({
+            blocksize: 1,
+          });
+          imgObj.filters[11] = new fabric.Image.filters.Gamma({
+            gamma: [1, 1, 1],
+          });
+          canvas.centerObject(imgObj);
+          canvas.add(imgObj);
+          canvas.renderAll();
+        },
+        { crossOrigin: "anonymous" }
+      );
+    }
+  });
+
+  icon_button.addEventListener("click", () => {
+    bg_tag.style.display = "none";
+    icon_tag.style.display = "block";
+    icon_button.style.opacity = "1";
+    bg_button.style.opacity = "0.5";
+    setSourceImages(iconList);
+    tagContainer = document.querySelector(".icon_tag");
+    tagContainer.addEventListener("click", (event) => {
+      if (event.target.className === "tag") {
+        tagClickList = [];
+        sourceKeyList.map(
+          (key) =>
+            sourceList[key].tag === event.target.innerText.slice(1) &&
+            tagClickList.push(sourceList[key])
+        );
+        sourceContainer.innerHTML = "";
+        setSourceImages(tagClickList);
+      }
+    });
+  });
+
+  bg_button.addEventListener("click", () => {
+    icon_tag.style.display = "none";
+    bg_tag.style.display = "block";
+    bg_button.style.opacity = "1";
+    icon_button.style.opacity = "0.5";
+
+    setSourceImages(bgList);
+    tagContainer = document.querySelector(".bg_tag");
+    tagContainer.addEventListener("click", (event) => {
+      if (event.target.className === "tag") {
+        tagClickList = [];
+        sourceKeyList.map(
+          (key) =>
+            sourceList[key].tag === event.target.innerText.slice(1) &&
+            tagClickList.push(sourceList[key])
+        );
+        sourceContainer.innerHTML = "";
+        setSourceImages(tagClickList);
+      }
+    });
+  });
+
+  tagContainer.addEventListener("click", (event) => {
+    if (event.target.className === "tag") {
+      tagClickList = [];
+      sourceKeyList.map(
+        (key) =>
+          sourceList[key].tag === event.target.innerText.slice(1) &&
+          tagClickList.push(sourceList[key])
+      );
+      sourceContainer.innerHTML = "";
+      setSourceImages(tagClickList);
+    }
+  });
 
   imgLoaderBox.addEventListener("click", () => {
     imgLoader.click();
@@ -346,6 +351,7 @@ window.onload = () => {
       fontSize: 36,
       fontFamily: "Quicksand",
     });
+    canvas.centerObject(textbox);
     canvas.add(textbox).setActiveObject(textbox);
   });
 
@@ -486,34 +492,10 @@ window.onload = () => {
     applyFilterValue(11, "gamma", current);
   };
 
-  canvas_size_button.addEventListener("click", () => {
-    console.log(canvas_width.value, canvas_height.value);
-    if (!(canvas_width.value && canvas_height.value)) {
-      window.alert("값을 입력 하신 후에 버튼을 눌러주세요.");
-    } else if (canvas_width.value < 100 || canvas_height.value < 50) {
-      window.alert("값이 너무 작습니다. (최소크기: 너비100 높이50)");
-    } else if (canvas_width.value > 1000 || canvas_height.value > 600) {
-      window.alert(
-        "가능한 크기를 초과하였습니다. (최대크기: 너비1000 높이600)"
-      );
-    } else {
-      upper_canvas.style.width = `${canvas_width.value}px`;
-      upper_canvas.style.height = `${canvas_height.value}px`;
-      upper_canvas.style.marginTop = `${(600 - canvas_height.value) / 2}px`;
-      lower_canvas.style.width = `${canvas_width.value}px`;
-      lower_canvas.style.height = `${canvas_height.value}px`;
-      lower_canvas.style.marginTop = `${(600 - canvas_height.value) / 2}px`;
-      canvasBox.style.width = `${canvas_width.value}px`;
-      canvasBox.style.height = `${canvas_height.value}px`;
-      canvasItem.style.width = `${canvas_width.value}px`;
-      canvasItem.style.height = `${canvas_height.value}px`;
-    }
-    canvas_width.value = "";
-    canvas_height.value = "";
-  });
-
   //image upload / download part
   imgLoader.onchange = function handleImage(e) {
+    toggleOn = false;
+    checkToggle();
     let reader = new FileReader();
     reader.onload = function (event) {
       let imgObj = new Image();
@@ -555,6 +537,8 @@ window.onload = () => {
 
   //function part
   function saveImage(e) {
+    toggleOn = false;
+    checkToggle();
     this.href = canvas.toDataURL({
       format: "jpg",
       quality: 1,
@@ -603,74 +587,6 @@ window.onload = () => {
     }
   }
 
-  searchButton.addEventListener("click", () => {
-    searchPopup.style.display = "block";
-  });
-  popupClose.addEventListener("click", () => {
-    searchPopup.style.display = "none";
-  });
-  showRecommandHelp.addEventListener("click", () => {
-    recommandHelpPopup.style.display = "block";
-  });
-  recommandHelpPopupClose.addEventListener("click", () => {
-    recommandHelpPopup.style.display = "none";
-  });
-
-  popup_icon_button.addEventListener("click", () => {
-    bg_tag.style.display = "none";
-    icon_tag.style.display = "block";
-    popup_icon_button.style.opacity = "1";
-    popup_bg_button.style.opacity = "0.5";
-    setSourceImages(iconList);
-    popupTagContainer = document.querySelector(".icon_tag");
-    popupTagContainer.addEventListener("click", (event) => {
-      if (event.target.className === "tag") {
-        tagClickList = [];
-        sourceKeyList.map(
-          (key) =>
-            sourceList[key].tag === event.target.innerText.slice(1) &&
-            tagClickList.push(sourceList[key])
-        );
-        popupImageContainer.innerHTML = "";
-        setSourceImages(tagClickList);
-      }
-    });
-  });
-
-  popup_bg_button.addEventListener("click", () => {
-    icon_tag.style.display = "none";
-    bg_tag.style.display = "block";
-    popup_bg_button.style.opacity = "1";
-    popup_icon_button.style.opacity = "0.5";
-
-    setSourceImages(bgList);
-    popupTagContainer = document.querySelector(".bg_tag");
-    popupTagContainer.addEventListener("click", (event) => {
-      if (event.target.className === "tag") {
-        tagClickList = [];
-        sourceKeyList.map(
-          (key) =>
-            sourceList[key].tag === event.target.innerText.slice(1) &&
-            tagClickList.push(sourceList[key])
-        );
-        popupImageContainer.innerHTML = "";
-        setSourceImages(tagClickList);
-      }
-    });
-  });
-
-  popupTagContainer.addEventListener("click", (event) => {
-    if (event.target.className === "tag") {
-      tagClickList = [];
-      sourceKeyList.map(
-        (key) =>
-          sourceList[key].tag === event.target.innerText.slice(1) &&
-          tagClickList.push(sourceList[key])
-      );
-      popupImageContainer.innerHTML = "";
-      setSourceImages(tagClickList);
-    }
-  });
   let list = {
     0: {
       count: 0,

@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <title>Imager Mobile</title>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
+      rel="stylesheet"
+    />
+    
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Noto Sans KR", sans-serif;
+      cursor: default;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgb(30, 30, 30);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* 추가된 코드 */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* 혼동 방지를 위해 .body를 .base로 이름 변경 하였음 */
+    .menu_item_container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0;
+      margin-bottom: 1.2rem;
+      width: 100%;
+      padding: 0;
+    }
+    
+    .menu_item {
+      margin-right: 2rem;
+      cursor: pointer;
+    }
+
+    .loginButton {
+      margin: 0;
+    }
+    
+    .logoutButton {
+      display: none;
+      cursor: pointer;
+      margin: 0;
+    }
+    
+    a {
+      text-decoration: none;
+      color: white;
+    }
+    
+    input {
+      outline: none;
+      cursor: pointer;
+    }
+    
+    .header {
+      width: 100%;
+      height: auto;
+      background-color: rgb(41, 44, 49);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      border-bottom: 1px solid black;
+    }
+    
+    .logo {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    
+    .logo i {
+      font-size: 1.4rem;
+      height: 100%;
+      margin-top: 0.3rem;
+    }
+    
+    .logo_text {
+      font-size: 1.4rem;
+      margin: 1rem 0 1rem 0.4rem;
+    }
+    
+    .header_buttons {
+      display: flex;
+      flex-direction: row;
+      padding: 1rem 0;
+    }
+    
+    .imgLoaderBox {
+      border-radius: 1rem;
+      background-color: rgb(95, 195, 235);
+      box-shadow: 1px 1px 3px 1px rgb(114, 154, 170);
+      cursor: pointer;
+    }
+    
+    .download {
+      width: 7rem;
+      height: 3rem;
+      margin-left: 2rem;
+      border-radius: 1rem;
+      background-color: white;
+      box-shadow: 1px 1px 3px 1px #dadce0;
+      color: black;
+      text-align: center;
+      line-height: 3rem;
+    }
+    
+    .imgLoaderBox {
+      width: 7rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .imgLoader {
+      display: none;
+    }
+
+    .div_border {
+      border: 1px solid black;
+      text-align: center;
+      color: dodgerblue;
+      font-weight: bolder;
+    }
+
+    .div_top {
+      width: 100vw;
+      display: flex;
+      flex-direction: row;
+      text-align: center;
+      color: beige;
+    }
+
+    .div_bottom {
+      width: 50vw;
+      display: inline-block;
+      padding-top: 0.5vh;
+      padding-bottom: 0.5vh;
+    }
+
+    /*캔버스 파트(canvasArea에서 이름 변경하였음)*/
+
+    .canvas_section {
+      padding: 0;
+      width: 100%;
+      height: 70%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgb(30, 30, 30);
+    }
+
+    .canvas-container {
+      border: none;
+    }
+
+    .canvas_box {
+      width: 98%;
+      height: 98%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: black;
+    }
+
+    /*컨트롤 파트*/
+
+    .controlerArea {
+      background: rgb(60, 60, 60);
+      width: 100%;
+      height: 30%;
+      overflow-y: scroll;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    body::-webkit-scrollbar {
+      display: none;
+    }
+    .controlerArea::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* .header_buttons {
+      display: flex;
+      flex-direction: row;
+    } */
+
+    .button {
+      border-radius: 1rem;
+      cursor: pointer;
+      width: 8rem;
+      height: 3rem;
+
+      display: inline-flex; /* display: flex; */
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      background-color: dodgerblue;
+      color: beige;
+      font-size: 20px;
+      font-weight: bolder;
+    }
+
+    /*불러오기,저장하기*/
+    .imgLoaderBox {
+      border-radius: 1rem;
+      background-color: dodgerblue;
+      cursor: pointer;
+      width: 8rem;
+      height: 3rem;
+      display: inline-flex; /* display: flex; */
+      align-items: center;
+      justify-content: center;
+      color: beige;
+    }
+    .download {
+      border-radius: 1rem;
+      background-color: dodgerblue;
+      cursor: pointer;
+      width: 8rem;
+      height: 3rem;
+      display: inline-flex; /* display: flex; */
+      align-items: center;
+      justify-content: center;
+      color: beige;
+    }
+    .imgLoader {
+      display: none;
+    }
+
+    /*변조*/
+    .filter_box {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .gamma_red_box,
+    .gamma_green_box,
+    .gamma_blue_box {
+      display: flex;
+      flex-direction: row;
+    }
+
+    /* 소스이미지 제공(사이드바) 소스코드 시작(css) */
+    header {
+      width: 100vw;
+      height: auto;
+      background-color: dodgerblue;
+      color: beige;
+      position: fixed;
+      z-index: 10;
+    }
+    .header-list {
+      width: 100vw;
+      font-size: 0;
+      padding: 0vw;
+    }
+    .header-list > li {
+      font-size: 2rem;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .header-list > li:nth-child(1) {
+      font: size 2rem;
+      width: 200px;
+    }
+    .header-list > li:nth-child(2) {
+      width: calc(100% - 250px);
+    }
+    .header-list > li:nth-child(3) {
+      width: 40px;
+    }
+    .header-list > li > div {
+      width: auto;
+    }
+
+    .menu-ul {
+      font-size: 0;
+    }
+    .menu-ul > li {
+      font-size: 12px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .menu-ul > li > a {
+      display: block;
+      width: auto;
+      padding: 15px;
+    }
+
+    input[id="menuicon"] {
+      display: none;
+    }
+    input[id="menuicon"] + label {
+      display: block;
+      position: relative;
+      width: 100%;
+      height: 40px;
+      cursor: pointer;
+    }
+    input[id="menuicon"] + label span {
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 3px;
+      border-radius: 30px;
+      background: #666;
+      transition: all 0.35s;
+    }
+    input[id="menuicon"] + label span:nth-child(1) {
+      top: 10%;
+    }
+    input[id="menuicon"] + label span:nth-child(2) {
+      top: 50%;
+      transform: translateY(-50%);
+    } /* ����ϰ� ����� �� �ִ� style top:calc(50% - 2.5px); margin-top:-2.5px;*/
+    input[id="menuicon"] + label span:nth-child(3) {
+      bottom: 10%;
+    }
+    input[id="menuicon"]:checked + label {
+      z-index: 2;
+    }
+    input[id="menuicon"]:checked + label span:nth-child(1) {
+      top: 50%;
+      transform: translateY(-50%) rotate(45deg);
+    }
+    input[id="menuicon"]:checked + label span:nth-child(2) {
+      opacity: 0;
+    }
+    input[id="menuicon"]:checked + label span:nth-child(3) {
+      bottom: 50%;
+      transform: translateY(50%) rotate(-45deg);
+    } 
+    div[class="sidebar"] {
+      width: 100vw;
+      height: 0px; /*메뉴 꺼내기 전의 화면상의 메뉴의 height(0px) */
+      background: darkgrey;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      transition: all 0.35s;
+      overflow: hidden;
+      margin-right: 0 !important;
+    }
+    input[id="menuicon"]:checked + label + div {
+      height: auto;
+    } /*메뉴를 꺼냈을 때의 메뉴의 height*/
+
+    .sitemap-ul {
+      font-size: 0;
+      width: 100vw;
+      margin: 15px auto;
+      text-align: center;
+    }
+    .sitemap-ul > li {
+      font-size: 12px;
+      display: inline-block;
+      vertical-align: top;
+      width: 20%;
+    }
+    ul {
+      list-style: none;
+    }
+    .header_buttons {
+      display: none;
+      padding: 0;
+    }
+    .toggle {
+      outline: none;
+      border: none;
+      background-color: transparent;
+      font-size: 1.5rem;
+      position: fixed;
+      top: 1.15rem;
+      right: 1.5rem;
+      color: white;
+      cursor: pointer;
+    }
+
+    .last {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .source_container {
+      padding: 1rem;
+    }
+
+    .source_image {
+      width: 13%;
+      height: 3rem;
+      margin: 1.83%;
+    }
+
+    .source_header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .source_header_title {
+      font-size: 1.4rem;
+    }
+
+    .source_buttons {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .source_button {
+      outline: none;
+      border: none;
+      background-color: dodgerblue;
+      color: white;
+      width: 6rem;
+      height: 1.7rem;
+      font-size: 1rem;
+      transition: 100ms transform ease-in;
+      box-shadow: 1px 1px 1px 1px dodgerblue;
+    }
+    .source_button:hover {
+      transform: scale(1.02);
+    }
+    .icon_button {
+      border-radius: 4px 0 0 4px;
+      margin-right: 0.2rem;
+    }
+
+    .bg_button {
+      border-radius: 0 4px 4px 0;
+      opacity: 0.5;
+    }
+
+    .tag_container {
+      display: flex;
+      flex-direction: row;
+      margin-top: 1rem;
+    }
+    
+    .tag {
+      outline: none;
+      border: none;
+      background-color: white;
+      box-shadow: 1px 3px 3px 1px lightgray;
+      cursor: pointer;
+      font-size: 1rem;
+      border-radius: 4px;
+      transition: 150ms transform ease-in;
+      margin: 0 0.4rem;
+    }
+    
+    .tag:hover {
+      transform: scale(1.05);
+    }
+    
+    .bg_tag {
+      display: none;
+    }
+
+    /* 사이드메뉴 소스코드 끝(css) */
+  </style>
+  <!-- <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script> -->
+
+  <body style="background-color: black">
+    <!-- css에서 .body라고 되어 있는 부분을 .base로 수정하였음(혼동 방지를 위해) -->
+    <header class="header">
+      <div class="header_top">
+        <a href="./index.html" class="logo">
+          <i class="fas fa-magic"></i>
+          <h1 class="logo_text">Imager</h1>
+        </a>
+        <button class="toggle"><i class="fas fa-bars"></i></button>
+      </div>
+      <div class="header_buttons">
+        <div class="source_header">
+          <p class="source_header_title">소스이미지</p>
+          <div class="source_buttons"> 
+            <button class="source_button icon_button">아이콘</button>
+            <button class="source_button bg_button">배경</button>
+          </div>
+          <div class="tag_container icon_tag">
+            <button class="tag">#감정표현</button>
+            <button class="tag">#동물</button>
+            <button class="tag">#캐릭터</button>
+            <button class="tag">#자연</button>
+          </div>
+          <div class="tag_container bg_tag">
+            <button class="tag">#풍경</button>
+            <button class="tag">#인테리어</button>
+            <button class="tag">#건물</button>
+          </div>
+          <div class="source_container"></div>
+        </div>
+        
+        <ul class="menu_item_container">
+          <li class="menu_item loginButton">
+            <a href="./login.html">로그인</a>
+          </li>
+          <li class="menu_item logoutButton">로그아웃</li>
+        </ul>
+      </div>
+    </header>
+    <section class="canvas_section">
+      <section class="canvas_box">
+        <canvas id="c" class="canvas" width="1000" height="600"></canvas>
+      </section>
+    </section>
+      <div class="controlerArea">
+        <div class="div_border">
+          <div class="div_top">
+            <!-- <div class="header_buttons"> -->
+            <div class="div_bottom">
+              <section class="imgLoaderBox">
+                불러오기
+                <input type="file" accept="file/image*" class="imgLoader" />
+              </section>
+            </div>
+            <div class="div_bottom">
+              <a href="#" class="download">저장하기</a>
+            </div>
+          </div>
+        </div>
+        <div class="div_border">
+          특수효과1
+          <div>
+            <!-- class="buttons_filter" // 이 주석은 0502 작업 이전에 작성되어 있었음-->
+            <div class="div_top">
+              <div class="div_bottom">
+                <div class="filter_box blackwhiteBox">
+                  <input type="checkbox" class="blackwhite" />
+                  <span>흑백</span>
+                </div>
+              </div>
+              <div class="filter_box grayScaleBox">
+                <input type="checkbox" class="grayScale" />
+                <span>회색조</span>
+              </div>
+            </div>
+            <div class="div_top">
+              <div class="div_bottom">
+                <div class="filter_box invertBox">
+                  <input type="checkbox" class="invert" />
+                  <span>반전</span>
+                </div>
+              </div>
+              <div class="filter_box sepiaBox">
+                <input type="checkbox" class="sepia" />
+                <span>세피아</span>
+              </div>
+            </div>
+            <div class="div_top">
+              <div class="div_bottom">
+                <div class="filter_box embossBox">
+                  <input type="checkbox" class="emboss" />
+                  <span>엠보싱</span>
+                </div>
+              </div>
+              <div class="filter_box vintageBox">
+                <input type="checkbox" class="vintage" />
+                <span>빈티지</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="div_border">
+          특수효과2
+          <div class="div_top">
+            <div class="filter_box brightBox">
+              <div class="div_bottom"><span>밝기</span></div>
+              <div class="div_bottom">
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value="0"
+                  class="bright"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="div_top">
+            <div class="filter_box contrastBox">
+              <div class="div_bottom"><span>대비</span></div>
+              <div class="div_bottom">
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value="0"
+                  class="contrast"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="div_top">
+            <div class="filter_box blurBox">
+              <div class="div_bottom"><span>블러</span></div>
+              <div class="div_bottom">
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value="0"
+                  class="blur"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="div_top">
+            <div class="filter_box noiseBox">
+              <div class="div_bottom"><span>노이즈</span></div>
+              <div class="div_bottom">
+                <input
+                  type="range"
+                  min="0"
+                  max="1000"
+                  step="100"
+                  value="0"
+                  class="noise"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="div_top">
+            <div class="filter_box pixelateBox">
+              <div class="div_bottom"><span>픽셀강조</span></div>
+              <div class="div_bottom">
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  step="1"
+                  value="1"
+                  class="pixelate"
+                />
+              </div>
+            </div>
+          </div>
+        <div class="div_border">
+          색채 변조
+          <div class="div_top">
+            <!-- <div class="filter_box gamma_red_box"> -->
+            <div class="div_bottom"><span>빨강</span></div>
+            <div class="div_bottom">
+              <input
+                type="range"
+                min="1"
+                max="10"
+                step="1"
+                value="1"
+                class="gamma_red"
+              />
+            </div>
+          </div>
+          <div class="div_top">
+            <!-- <div class="filter_box gamma_green_box"> -->
+            <div class="div_bottom"><span>초록</span></div>
+            <div class="div_bottom">
+              <input
+                type="range"
+                min="1"
+                max="10"
+                step="1"
+                value="1"
+                class="gamma_green"
+              />
+            </div>
+          </div>
+          <div class="div_top">
+            <!-- <div class="filter_box gamma_blue_box"> -->
+            <div class="div_bottom"><span>파랑</span></div>
+            <div class="div_bottom">
+              <input
+                type="range"
+                min="1"
+                max="10"
+                step="1"
+                value="1"
+                class="gamma_blue"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="div_border">
+          반전
+          <div class="div_top">
+            <!-- <div style="display: flex; flex-direction: row"> -->
+            <div class="div_bottom">
+              <button class="button flipY">상하 반전</button>
+            </div>
+            <div class="div_bottom">
+              <button class="button flipX">좌우 반전</button>
+            </div>
+          </div>
+        </div>
+        <div class="div_border">
+          회전
+          <div class="div_top">
+            <!-- <div style="display: flex; flex-direction: row"> -->
+            <div class="div_bottom">
+              <button class="button rotate_right">시계 방향</button>
+            </div>
+            <div class="div_bottom">
+              <button class="button rotate_left">반시계 방향</button>
+            </div>
+          </div>
+          <div class="div_top">
+            <div class="div_bottom">
+              <button class="button rotate_origin">원래대로</button>
+            </div>
+            <div class="div_bottom"></div>
+            <!--형태 왜곡을 방지하기 위해 사용한 div_bottom. 삭제해도 무방하나 만약을 위해 사용함-->
+          </div>
+        </div>
+
+          <div class="div_border">
+            삽입
+            <div class="div_top">
+              <!-- <div> -->
+              <!-- <div style="display: flex; flex-direction: row"> -->
+              <div class="div_bottom">
+                <button class="button putText">텍스트 상자</button>
+              </div>
+              <div class="div_bottom">
+                <select
+                  style="font-size: 20px; width: 6rem; height: 3rem"
+                  name=""
+                  id=""
+                  class="text_color"
+                >
+                  <option value="white">흰색</option>
+                  <option value="black">검은색</option>
+                  <option value="blue">파란색</option>
+                  <option value="red">빨간색</option>
+                  <option value="yellow">노란색</option>
+                  <option value="green">초록색</option>
+                  <option value="yellowgreen">연두색</option>
+                  <option value="skyblue">하늘색</option>
+                  <option value="orange">주황색</option>
+                  <option value="pink">분홍색</option>
+                  <option value="purple">보라색</option>
+                  <option value="brown">갈색</option>
+                  <option value="gray">회색</option>
+                  <option value="lightgray">연회색</option>
+                </select>
+                <select
+                  style="font-size: 20px; width: 4rem; height: 3rem"
+                  name=""
+                  id=""
+                  class="text_size"
+                >
+                  <option value="36">36</option>
+                  <option value="40">40</option>
+                  <option value="44">44</option>
+                  <option value="48">48</option>
+                  <option value="52">52</option>
+                  <option value="56">56</option>
+                  <option value="60">60</option>
+                  <option value="64">64</option>
+                  <option value="68">68</option>
+                  <option value="72">72</option>
+                  <option value="76">76</option>
+                  <option value="80">80</option>
+                  <option value="84">84</option>
+                  <option value="88">88</option>
+                  <option value="92">92</option>
+                  <option value="96">96</option>
+                  <option value="100">100</option>
+                </select>
+              </div>
+            </div>
+            <!-- </div> -->
+            <div class="div_top">
+              <div class="div_bottom"></div>
+              <!--형태 왜곡을 방지하기 위해 사용한 div_bottom. 삭제해도 무방하나 만약을 위해 사용함-->
+            </div>
+          </div>
+          <div class="div_border">
+            이미지 선택
+            <div class="last">
+              <div class="div_top">
+                <div class="div_bottom">
+                  <button class="button discardSelect">선택 해제</button>
+                </div>
+              </div>
+              <div class="div_top">
+                <div class="div_bottom">
+                  <button class="button removeImage">이미지 제거</button>
+                </div>
+                <div class="div_bottom"></div>
+                <!--형태 왜곡을 방지하기 위해 사용한 div_bottom. 삭제해도 무방하나 만약을 위해 사용함-->
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        <!-- <div>소스이미지(위치 변경 예정)</div>
+        <div class="hideMenuBody" id="hideMenuBodyId">
+          <div>
+            <img src="./sample/sampleimg1.jpg" width="100%" height="100%" />
+          </div>
+          
+          <div>
+            <img src="./sample/sampleimg2.jpg" width="100%" height="100%" />
+          </div>
+          <div>
+            <img src="./sample/sampleimg3.jpg" width="100%" height="100%" />
+          </div>
+          <div>
+            <img src="./sample/sampleimg4.jpg" width="100%" height="100%" />
+          </div>
+          <div>
+            <img src="./sample/sampleimg5.jpg" width="100%" height="100%" />
+          </div>
+          <div onclick="closeLeftMenu(); return false;">Close</div>
+        </div>
+        <div
+          class="circleBt"
+          id="circleBt"
+          onclick="showLeftMenu(this); return false;"
+        >
+          <div style="margin-top: 13px"></div>
+          <div></div>
+          <div></div>
+        </div> -->
+      </div>
+      <!--controler area 끝-->
+    </section>
+    <!--base 끝-->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.3.1/fabric.min.js"
+    ></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
+    <script src="src/loginCheck.js"></script>
+    <script src="src/editor_mobile.js"></script>
+    <script
+      src="https://kit.fontawesome.com/5cb5a09ad0.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

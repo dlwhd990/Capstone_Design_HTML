@@ -524,6 +524,7 @@ button:hover:after {
 
 .source_image {
   width: 10%;
+  height: 6.5rem;
   cursor: pointer;
   margin: 1%;
   transition: 150ms transform ease-in;
